@@ -10,16 +10,24 @@
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4">Cars List</h1>
+        <h1 class="text-center fs-1 fw-bold p-4 border-bottom-1">Cars List</h1>
         <div class="row">
           <div class="border col-3 filter-bar"></div>
           <div class="col-8 offset-1 car-list" id="carList">
 
 
-            <div class="card">
+            <!-- <div class="card mb-3">
               <div class="row p-3">
                 <div class="col-4">
-                  <div class="card-top-label card-vip-label fw-bold d-flex flex-column">
+                  <div class="position-relative">
+                    <div class="card-labels position-absolute start-0">
+                      <div class="card-labels-top d-flex align-items-center">
+                        <span>TOP</span>
+                      </div>
+                      <div class="card-labels-vip d-flex align-items-center">
+                        <span>VIP</span>
+                      </div>
+                    </div>
                     <img width="1" height="1" loading="lazy" src="http://dummyimage.com/225x169.jpg/cc0000/ffffff" alt="" class="card-img" />
                   </div>
                   <div class="card-rating my-3 text-center">
@@ -31,9 +39,9 @@
                   </div>
                 </div>
                 <div class="col-8">
-                  <h2 class="card-title fs-3 fw-bold">BMW M3 1.4 CVT (2010)</h2>
-                  <h3 class="card-price fs-4 d-flex align-items-center fw-bold">2 269 &#36;<span class="text-muted fs-5 fw-normal ms-4">69 453 &#8372;</span></h3>
-                  <ul class="card-base-info row my-3">
+                  <h2 class="card-title fs-3 fw-bold mb-3">BMW M3 1.4 CVT (2010)</h2>
+                  <h3 class="card-price fs-3 d-flex align-items-center fw-bold mb-4">2 269 &#36;<span class="text-muted fs-5 fw-normal ms-4">69 453 &#8372;</span></h3>
+                  <ul class="card-base-info row mb-4">
                     <li class="col-6 mb-3">
                       <i class="fas fa-tachometer-alt me-1 text-center"></i> 394036 km
                     </li>
@@ -41,13 +49,13 @@
                       <i class="fas fa-map-marker-alt me-1 text-center"></i> United States
                     </li>
                     <li class="col-6">
-                      <i class="fas fa-gas-pump me-1 text-center"></i> Benzin
+                      <i class="fas fa-gas-pump me-1 text-center"></i> Benzin, 1.4l
                     </li>
-                    <li class="col-6">
-                      <i class="fas fa-circle position-relative me-1 text-center card-transmition"></i> CVT
+                    <li class="col-6 d-flex">
+                      <span class="me-2 card-transmition"></span> CVT
                     </li>
                   </ul>
-                  <div class="card-consume my-3">
+                  <div class="card-consume mb-4">
                     <h4 class="mb-3 fw-bolder">Fuel consumption (l/100km)</h4>
                     <ul class="row">
                       <li class="col-4">
@@ -61,22 +69,18 @@
                       </li>
                     </ul>
                   </div>
-                  <div class="card-vin mb-3 d-flex">
+                  <div class="card-vin mb-4 d-flex">
                     <p class="border border-primary border-2 rounded">
-                      <span class="card-vin-label fs-6 p-1">VIN</span>
-                      <span class="p-1">1G6DW677550624991</span>
+                      <span class="card-vin-label p-2">VIN</span>
+                      <span class="p-2 ps-0">1G6DW677550624991</span>
                     </p>
                   </div>
-                  <div class="card-paint d-flex align-items-center mb-3">
-                    Color:
-                    <p class="d-flex align-items-center pe-auto">
-                      <span class="card-paint-title ms-2">Goldenrod</span>
-                      <span class="card-paint-example border border-1 border-dark rounded ms-2" style="background-color: goldenrod;"></span>
-                    </p>
+                  <div class="card-paint d-flex align-items-center mb-4">
+                    Color: <span class="ms-2">Goldenrod</span>
                   </div>
                   <div class="d-flex align-items-center">
-                    <a href="" class="btn btn-primary fw-bolder">
-                      <i class="fas fa-phone-alt"></i> Call
+                    <a href="" class="btn btn-primary fw-bold">
+                      <i class="fas fa-phone-alt me-2"></i> Call
                     </a>
                     <p class="ms-3 text-muted">Ellery Girardin</p>
                   </div>
@@ -92,7 +96,7 @@
                   <span>5</span>
                 </small>
               </div>
-            </div>
+            </div> -->
 
 
           </div>
@@ -104,6 +108,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/a19e82d2c7.js" crossorigin="anonymous"></script>
     <script src="js/data.js"></script>
-    <!-- <script src="js/app.js"></script> -->
+    <script src="js/app.js"></script>
   </body>
 </html>

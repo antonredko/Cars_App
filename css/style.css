@@ -60,28 +60,36 @@ body{
 html{
     scroll-behavior: smooth;
 }
-.card-vip-label::before,
-.card-top-label::before{
+.card-labels{
 	font-size: 14px;
-	padding: 3px 5px;
-	/* position: absolute;
-	top: 5px;
-	left: 0; */
-	color: white;
-	justify-content: center;
-	align-items: center;
-	border-radius: 0 5px 5px 0;
+	color: #fff;
+	top: 3px;
 }
-.card-vip-label::before{
-	content: 'VIP';
+.card-labels>:nth-child(n + 2){
+	margin-top: 3px;
+}
+.card-labels span{
+	padding: 3px 5px;
+}
+.card-labels-top span{
+	background-color: #79BE00;
+}
+.card-labels-vip span{
 	background-color: #0d6efd;
 }
-.card-top-label::before{
-	content: 'TOP';
-	background-color: #79BE00;
-	margin-bottom: -15px;
-	opacity: .8;
-	z-index: 100;
+.card-labels-top::after, .card-labels-vip::after{
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+}
+.card-labels-top::after{
+	border-left: 5px solid #79BE00;
+}
+.card-labels-vip::after{
+	border-left: 5px solid #0d6efd;
 }
 .card-img{
 	width: 100%;
@@ -100,29 +108,15 @@ html{
 	justify-content: center;
 }
 .card-vin-label{
-	color: white;
+	color: #fff;
 	background-color: #0d6efd;
 }
 .card-rating{
 	color: gold;
 }
-.card-transmition::after{
-	content: 'T';
-	width: 10px;
-	color: white;
-	position: absolute;
-	top: 0;
-	left: 50%;
-	margin-left: -5px;
-}
-.card-paint>p{
-	cursor: pointer;
-}
-.card-paint-example{
-	width: 30px;
-	height: 15px;
-	transition: .3s;
-}
-.card-paint>p:hover .card-paint-example{
-	transform: scale(2);
+.card-transmition::before{
+	content: '';
+	width: 18px;
+	height: 16px;
+	background: url("data:image/svg+xml,%0A%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7.5' cy='7.5' r='7' stroke='%23DB5C4C'/%3E%3Cpath d='M4.5 4V7.5M4.5 11V7.5M4.5 7.5H7.5M7.5 7.5V4M7.5 7.5V11M7.5 7.5H10.5V4' stroke='%23DB5C4C'/%3E%3C/svg%3E%0A") no-repeat center/contain;
 }
