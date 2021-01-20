@@ -50,7 +50,7 @@ function Card(data) {
         }
     }
 
-    return `<div class="card mb-2">
+    return `<div class="card mb-3">
     <div class="row">
       <div class="col-4">
         <img width="1" height="1" loading="lazy" src="${data.img}" alt="${data.make} ${data.model}" class="card-img" />
@@ -59,7 +59,7 @@ function Card(data) {
         <h2 class="card-title">${data.make} ${data.model} ${data.engine_volume} ${data.transmission} (${data.year})</h2>
         <h3 class="card-price">${data.price}</h3>
         <div class="card-rating">${stars} ${data.rating}</div>
-        ${data.vin ? `<div class="card-vin">${data.vin}</div>` : ''}
+        ${data.vin ? `<div class="card-vin">VIN-код: ${data.vin}</div>` : ''}
         <a href="tel:${data.phone}" class="btn btn-success">Call</a>
         <small class="text-muted">${timeFormatter.format(data.timestamp)} ${dateFormatter.format(data.timestamp)}</small>
       </div>
