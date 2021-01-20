@@ -1,40 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-      crossorigin="anonymous"
-    />
     <link rel="stylesheet" href="css/style.css" />
-    <title>Practice JS</title>
+    <title>Car List</title>
   </head>
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4">Car list</h1>
-        <hr class="mt-0"/>
+        <h1 class="text-center fs-1 fw-bold p-4">Car List</h1>
         <div class="row">
           <div class="border col-3 filter-bar"></div>
           <div class="col-8 offset-1 car-list" id="carList">
 
 
-            <div class="card p-3">
-              <div class="row">
+            <div class="card">
+              <div class="row p-3">
                 <div class="col-4">
-                  <img width="1" height="1" loading="lazy" src="" alt="" class="card-img" />
+                  <div class="card-top-label card-vip-label fw-bold d-flex flex-column">
+                    <img width="1" height="1" loading="lazy" src="http://dummyimage.com/225x169.jpg/cc0000/ffffff" alt="" class="card-img" />
+                  </div>
+                  <div class="card-rating my-3 text-center">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
                 </div>
                 <div class="col-8">
-                  <h2 class="card-title">BMW M3 1.4 (2010)</h2>
-                  <h3 class="card-price">2269</h3>
-                  <div class="card-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                  <div class="card-vin">VIN-код: 1G6DW677550624991</div>
-                  <a href="" class="btn btn-success">Call</a>
-                  <small class="text-muted">11:11 12.01.2021</small>
+                  <h2 class="card-title fs-3 fw-bold">BMW M3 1.4 CVT (2010)</h2>
+                  <h3 class="card-price fs-4 d-flex align-items-center fw-bold">2 269 &#36;<span class="text-muted fs-5 fw-normal ms-4">69 453 &#8372;</span></h3>
+                  <ul class="card-base-info row my-3">
+                    <li class="col-6 mb-3">
+                      <i class="fas fa-tachometer-alt me-1 text-center"></i> 394036 km
+                    </li>
+                    <li class="col-6 mb-3">
+                      <i class="fas fa-map-marker-alt me-1 text-center"></i> United States
+                    </li>
+                    <li class="col-6">
+                      <i class="fas fa-gas-pump me-1 text-center"></i> Benzin
+                    </li>
+                    <li class="col-6">
+                      <i class="fas fa-circle position-relative me-1 text-center card-transmition"></i> CVT
+                    </li>
+                  </ul>
+                  <div class="card-consume my-3">
+                    <h4 class="mb-3 fw-bolder">Fuel consumption (l/100km)</h4>
+                    <ul class="row">
+                      <li class="col-4">
+                        <i class="fas fa-city me-1"></i> 12.3
+                      </li>
+                      <li class="col-4">
+                        <i class="fas fa-road me-1"></i> 4.8
+                      </li>
+                      <li class="col-4">
+                        <i class="fas fa-exchange-alt me-1"></i> 8.4
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-vin mb-3 d-flex">
+                    <p class="border border-primary border-2 rounded">
+                      <span class="card-vin-label fs-6 p-1">VIN</span>
+                      <span class="p-1">1G6DW677550624991</span>
+                    </p>
+                  </div>
+                  <div class="card-paint d-flex align-items-center mb-3">
+                    Color:
+                    <p class="d-flex align-items-center pe-auto">
+                      <span class="card-paint-title ms-2">Goldenrod</span>
+                      <span class="card-paint-example border border-1 border-dark rounded ms-2" style="background-color: goldenrod;"></span>
+                    </p>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <a href="" class="btn btn-primary fw-bolder">
+                      <i class="fas fa-phone-alt"></i> Call
+                    </a>
+                    <p class="ms-3 text-muted">Ellery Girardin</p>
+                  </div>
                 </div>
+              </div>
+              <div class="card-footer text-muted d-flex">
+                <small>
+                  <i class="far fa-clock me-1"></i>
+                  <span>11:11 12.01.2021</span>
+                </small>
+                <small class="ms-3">
+                  <i class="fas fa-eye me-1"></i>
+                  <span>5</span>
+                </small>
               </div>
             </div>
 
@@ -45,10 +101,8 @@
     </div>
 
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a19e82d2c7.js" crossorigin="anonymous"></script>
     <script src="js/data.js"></script>
     <!-- <script src="js/app.js"></script> -->
   </body>

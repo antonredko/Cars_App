@@ -43,7 +43,7 @@ table {
 *, ::before, ::after{
     box-sizing: border-box;  
 }
-a, ::before, ::after{
+a, span, ::before, ::after{
     display: inline-flex;
     text-decoration: none;
     color: inherit;
@@ -60,16 +60,69 @@ body{
 html{
     scroll-behavior: smooth;
 }
-.card{
-	box-shadow: 0 0 15px 0 rgb(38 38 38/20%);
+.card-vip-label::before,
+.card-top-label::before{
+	font-size: 14px;
+	padding: 3px 5px;
+	/* position: absolute;
+	top: 5px;
+	left: 0; */
+	color: white;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0 5px 5px 0;
+}
+.card-vip-label::before{
+	content: 'VIP';
+	background-color: #0d6efd;
+}
+.card-top-label::before{
+	content: 'TOP';
+	background-color: #79BE00;
+	margin-bottom: -15px;
+	opacity: .8;
+	z-index: 100;
 }
 .card-img{
 	width: 100%;
 	height: 100px;
 	object-fit: cover;
+	background-color: #ccc;
 }
-.card-body{
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+.card-price{
+	color: green;
+}
+.card-base-info i, .card-consume i{
+	color: #f7643b;
+}
+.card-base-info i::before{
+	width: 18px;
+	justify-content: center;
+}
+.card-vin-label{
+	color: white;
+	background-color: #0d6efd;
+}
+.card-rating{
+	color: gold;
+}
+.card-transmition::after{
+	content: 'T';
+	width: 10px;
+	color: white;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -5px;
+}
+.card-paint>p{
+	cursor: pointer;
+}
+.card-paint-example{
+	width: 30px;
+	height: 15px;
+	transition: .3s;
+}
+.card-paint>p:hover .card-paint-example{
+	transform: scale(2);
 }

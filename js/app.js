@@ -1,11 +1,22 @@
 const CARS = [...DATA]
 const carListEl = document.getElementById('carList')
-const dateFormatter = new Intl.DateTimeFormat('en-US')
-const timeFormatter = new Intl.DateTimeFormat('en-US',{
+const dateFormatter = new Intl.DateTimeFormat('ua')
+const timeFormatter = new Intl.DateTimeFormat('ua', {
     hour: '2-digit',
     minute: '2-digit'
 })
-const exchangeCourseUSD = 28.35194 
+const currencyFormatterUSD = new Intl.NumberFormat('ua', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0
+})
+const currencyFormatterUAH = new Intl.NumberFormat('ua', {
+    style: 'currency',
+    currency: 'UAH',
+    minimumFractionDigits: 0
+})
+const exchangeCourseUSD = 28.35194
+
 // {
 //     "id": "89aed5b8c686ebd713a62873e4cd756abab7a106",
 //     "make": "BMW",
@@ -33,20 +44,23 @@ const exchangeCourseUSD = 28.35194
 renderCards(carListEl, CARS)
 
 
-function renderCards(where, array) {
+function renderCards(where, array){
     array.forEach(element => {
         where.insertAdjacentHTML('beforeEnd', Card(element))
     });
 }
 
-function Card(data) {
+function Card(data){
     let stars = ''
+    let priceUAH = Math.round(data.price * exchangeCourseUSD)
 
-    for (let i = 0; i < 5; i++) {
-        if (i < data.rating) {
-            stars += '&#9733;'
+    for (let i = 0; i < 5; i++){
+        if (i < data.rating && data.rating < i + 1){
+            stars += '<i class="fas fa-star-half-alt"></i>'
+        } else if (i < data.rating){
+            stars += '<i class="fas fa-star"></i>'
         } else{
-            stars += '&#9734;'
+            stars += '<i class="far fa-star"></i>'
         }
     }
 
@@ -57,7 +71,7 @@ function Card(data) {
       </div>
       <div class="col-8 card-body">
         <h2 class="card-title">${data.make} ${data.model} ${data.engine_volume} ${data.transmission} (${data.year})</h2>
-        <h3 class="card-price">${data.price}</h3>
+        <h3 class="card-price">${currencyFormatterUSD.format(data.price)} <span class="text-muted">${currencyFormatterUAH.format(priceUAH)}</span></h3>
         <div class="card-rating">${stars} ${data.rating}</div>
         ${data.vin ? `<div class="card-vin">VIN-код: ${data.vin}</div>` : ''}
         <a href="tel:${data.phone}" class="btn btn-success">Call</a>
