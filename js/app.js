@@ -94,7 +94,7 @@ function Card(data) {
                       <i class="fas fa-gas-pump me-1 text-center"></i> ${data.fuel}, ${data.engine_volume}l
                     </li>
                     <li class="col-6 d-flex">
-                      <span class="me-2 card-transmition"></span> ${data.transmission}
+                      <span class="me-1 card-transmition"></span> ${data.transmission}
                     </li>
                   </ul>
                   <div class="card-consume mb-4">
