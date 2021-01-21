@@ -39,7 +39,7 @@ const exchangeCourseUSD = 28.35194
 //     "transmission": "CVT",
 //     "odo": 394036,
 //     "consume": { "road": 4.8, "city": 12.3, "mixed": 8.4 }
-//   },
+// },
 
 renderCards(carListEl, CARS)
 
@@ -69,12 +69,8 @@ function Card(data) {
                 <div class="col-4">
                   <div class="position-relative">
                     <div class="card-labels position-absolute start-0">
-                        ${data.top ? `<div div class="card-labels-top d-flex align-items-center">
-                            <span>TOP</span>
-                        </div>` : ''}
-                        ${data.vip ? `<div class="card-labels-vip d-flex align-items-center">
-                            <span>VIP</span>
-                        </div>` : ''}
+                      ${data.top ? `<div class="card-labels-top d-flex align-items-center"><span>TOP</span></div>` : ''}
+                      ${data.vip ? `<div class="card-labels-vip d-flex align-items-center"><span>VIP</span></div>` : ''}
                     </div>
                     <img width="1" height="1" loading="lazy" src="${data.img}" alt="${data.make} ${data.model} ${data.engine_volume} ${data.transmission} (${data.year})" class="card-img" />
                   </div>

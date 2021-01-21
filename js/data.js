@@ -77,7 +77,7 @@ const DATA = [
       "color": "Green",
       "vin": "1N6AF0LX6EN234470",
       "country": "Russia",
-      "rating": 3,
+      "rating": 3.5,
       "price": 766,
       "views": 143,
       "seller": "Wenona Lockhead",
