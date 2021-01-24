@@ -55,7 +55,6 @@ sortingSelectEl.addEventListener('change', function () {
       sortArr.sort(function (a, b) {
         return a.price - b.price
       })
-
       renderCards(carListEl, sortArr)
       break
     
@@ -63,7 +62,41 @@ sortingSelectEl.addEventListener('change', function () {
       sortArr.sort(function (a, b) {
         return b.price - a.price
       })
-
+      renderCards(carListEl, sortArr)
+      break
+    
+    case ('date'):
+      sortArr.sort(function (a, b) {
+        return b.timestamp - a.timestamp
+      })
+      renderCards(carListEl, sortArr)
+      break
+    
+    case ('firstOld'):
+      sortArr.sort(function (a, b) {
+        return a.year - b.year
+      })
+      renderCards(carListEl, sortArr)
+      break
+    
+    case ('firstNew'):
+      sortArr.sort(function (a, b) {
+        return b.year - a.year
+      })
+      renderCards(carListEl, sortArr)
+      break
+    
+    case ('lessMileage'):
+      sortArr.sort(function (a, b) {
+        return a.odo - b.odo
+      })
+      renderCards(carListEl, sortArr)
+      break
+    
+    case ('moreMileage'):
+      sortArr.sort(function (a, b) {
+        return b.odo - a.odo
+      })
       renderCards(carListEl, sortArr)
       break
     
