@@ -10,10 +10,27 @@
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3 mb-4">Cars List</h1>
+        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3">Cars List</h1>
         <div class="row">
-          <div class="border col-3 filter-bar"></div>
-          <div class="col-8 offset-1 car-list" id="carList">
+          <div class="top-bar my-3 d-flex justify-content-between">
+            <form name="sortingForm">
+              <label class="d-flex align-items-center">
+                Сортировка:
+                <select name="sortingSelect" class="form-select ms-2" id="sortingSelect">
+                  <option value="default" selected>По-умолчанию</option>
+                  <option value="fromCheap">От дешевых к дорогим</option>
+                  <option value="fromDear">От дорогих к дешевым</option>
+                </select>
+              </label>
+            </form>
+            <div class="masonry-btns" id="masonryBtns">
+              <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
+              <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
+            </div>
+          </div>
+          <div class="border col-2 filter-bar"></div>
+          <div class="col-10">
+            <div class="row row-cols-1 car-list" id="carList"></div>
 
             <!-- <div class="card mb-3">
               <div class="row p-3">
@@ -70,8 +87,7 @@
                   </div>
                   <div class="card-vin mb-4 d-flex">
                     <p class="border border-primary border-2 rounded">
-                      <span class="card-vin-label p-2">VIN</span>
-                      <span class="p-2 ps-0">1G6DW677550624991</span>
+                      <span class="card-vin-label p-2">VIN</span><span class="p-2">1G6DW677550624991</span>
                     </p>
                   </div>
                   <div class="card-paint d-flex align-items-center mb-4">
