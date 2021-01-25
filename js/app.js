@@ -48,61 +48,47 @@ masonryBtnsEl.addEventListener('click', event => {
 })
 
 sortingSelectEl.addEventListener('change', function () {
-  let sortArr = [...CARS]
+  let defaultArray = [...CARS]
 
   switch (this.value) {
 
     case ('fromCheap'):
-      sortArr.sort(function (a, b) {
-        return a.price - b.price
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => a.price - b.price)
+      renderCards(carListEl, CARS)
       break
     
     case ('fromDear'):
-      sortArr.sort(function (a, b) {
-        return b.price - a.price
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => b.price - a.price)
+      renderCards(carListEl, CARS)
       break
     
     case ('date'):
-      sortArr.sort(function (a, b) {
-        return b.timestamp - a.timestamp
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => b.timestamp - a.timestamp)
+      renderCards(carListEl, CARS)
       break
     
     case ('firstOld'):
-      sortArr.sort(function (a, b) {
-        return a.year - b.year
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => a.year - b.year)
+      renderCards(carListEl, CARS)
       break
     
     case ('firstNew'):
-      sortArr.sort(function (a, b) {
-        return b.year - a.year
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => b.year - a.year)
+      renderCards(carListEl, CARS)
       break
     
     case ('lessMileage'):
-      sortArr.sort(function (a, b) {
-        return a.odo - b.odo
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => a.odo - b.odo)
+      renderCards(carListEl, CARS)
       break
     
     case ('moreMileage'):
-      sortArr.sort(function (a, b) {
-        return b.odo - a.odo
-      })
-      renderCards(carListEl, sortArr)
+      CARS.sort((a, b) => b.odo - a.odo)
+      renderCards(carListEl, CARS)
       break
     
     case ('default'):
-      renderCards(carListEl, CARS)
+      renderCards(carListEl, defaultArray)
       break
   }
 })
