@@ -13,21 +13,19 @@
         <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3">Cars List</h1>
         <div class="row">
           <div class="top-bar my-3 d-flex justify-content-between">
-            <form name="sortingForm">
-              <label class="d-flex align-items-center">
-                Сортировка:
-                <select name="sortingSelect" class="form-select ms-2" id="sortingSelect">
-                  <option value="default" selected>По-умолчанию</option>
-                  <option value="fromCheap">От дешевых к дорогим</option>
-                  <option value="fromDear">От дорогих к дешевым</option>
-                  <option value="date">Дата добавления</option>
-                  <option value="firstOld">Год выпуска, по возростанию</option>
-                  <option value="firstNew">Год выпуска, по убыванию</option>
-                  <option value="lessMileage">Пробег, по возростанию</option>
-                  <option value="moreMileage">Пробег, по убыванию</option>
-                </select>
-              </label>
-            </form>
+            <label class="d-flex align-items-center">
+              Сортировка:
+              <select name="sortingSelect" class="form-select ms-2" id="sortingSelect">
+                <option value="default" selected>По умолчанию</option>
+                <option value="fromCheap">От дешевых к дорогим</option>
+                <option value="fromDear">От дорогих к дешевым</option>
+                <option value="date">Дата добавления</option>
+                <option value="firstOld">Год выпуска, по возростанию</option>
+                <option value="firstNew">Год выпуска, по убыванию</option>
+                <option value="lessMileage">Пробег, по возростанию</option>
+                <option value="moreMileage">Пробег, по убыванию</option>
+              </select>
+            </label>
             <div class="masonry-btns" id="masonryBtns">
               <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
               <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
@@ -118,6 +116,9 @@
               </div>
             </div> -->
 
+          </div>
+          <div class="text-center pt-3">
+            <button class="btn btn-primary" id="showMoreBtn">Показать еще</button>
           </div>
         </div>
       </div>
