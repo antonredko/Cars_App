@@ -48,8 +48,6 @@ masonryBtnsEl.addEventListener('click', event => {
 })
 
 sortingSelectEl.addEventListener('change', function () {
-  let defaultArray = [...CARS]
-
   switch (this.value) {
 
     case ('fromCheap'):
@@ -85,10 +83,6 @@ sortingSelectEl.addEventListener('change', function () {
     case ('moreMileage'):
       CARS.sort((a, b) => b.odo - a.odo)
       renderCards(carListEl, CARS)
-      break
-    
-    case ('default'):
-      renderCards(carListEl, defaultArray)
       break
   }
 })
