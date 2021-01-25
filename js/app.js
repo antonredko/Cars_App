@@ -22,6 +22,7 @@ const uahFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0
 })
 const exchangeCourseUSD = 28.35194
+let countOfCards = 10
 
 masonryBtnsEl.addEventListener('click', event => {
   const btnEl = event.target.closest('.btn')
@@ -87,14 +88,17 @@ sortingSelectEl.addEventListener('change', function () {
   }
 })
 
-let count = 10
+showMoreBtnEl.addEventListener('click', function() {
+  countOfCards += 10
+  renderCards(carListEl, CARS)
+})
 
 renderCards(carListEl, CARS)
 
 function renderCards(where, array) {
   where.innerHTML = ''
   
-  let showedCards = array.slice(0, count)
+  let showedCards = array.slice(0, countOfCards)
 
   showedCards.forEach(element => {
     where.insertAdjacentHTML('beforeEnd', Card(element))
@@ -104,11 +108,6 @@ function renderCards(where, array) {
     showMoreBtnEl.classList.add('d-none')
   }
 }
-
-showMoreBtnEl.addEventListener('click', function() {
-  count += 10
-  renderCards(carListEl, CARS)
-})
 
 function Card(data) {
   let stars = ''
