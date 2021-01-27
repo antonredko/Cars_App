@@ -1,131 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Список автомобилей</title>
     <link rel="stylesheet" href="css/style.css" />
-    <title>Cars List</title>
   </head>
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3">Cars List</h1>
+        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3">Список автомобилей</h1>
         <div class="row">
-          <div class="top-bar my-3 d-flex justify-content-between">
-            <label class="d-flex align-items-center">
+          <div class="top-bar my-3 d-flex justify-content-between col-12">
+            <label class="d-flex align-items-center col-4">
               Сортировка:
-              <select name="sortingSelect" class="form-select ms-2" id="sortingSelect">
-                <option selected disabled>По умолчанию</option>
-                <option value="fromCheap">От дешевых к дорогим</option>
-                <option value="fromDear">От дорогих к дешевым</option>
-                <option value="date">Дата добавления</option>
-                <option value="firstOld">Год выпуска, по возростанию</option>
-                <option value="firstNew">Год выпуска, по убыванию</option>
-                <option value="lessMileage">Пробег, по возростанию</option>
-                <option value="moreMileage">Пробег, по убыванию</option>
+              <select name="sortingSelect" class="sortingSelect form-select ms-2" id="sortingSelect">
+                <option class="py-3" value="default" selected>По умолчанию</option>
+                <option class="py-3" value="price-inc">От дешевых к дорогим</option>
+                <option class="py-3" value="price-dec">От дорогих к дешевым</option>
+                <option class="py-3" value="timestamp-dec">Дата добавления</option>
+                <option class="py-3" value="year-inc">Год выпуска, по возростанию</option>
+                <option class="py-3" value="year-dec">Год выпуска, по убыванию</option>
+                <option class="py-3" value="odo-inc">Пробег, по возростанию</option>
+                <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
               </select>
             </label>
-            <div class="masonry-btns" id="masonryBtns">
+            <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex align-items-center justify-content-center">
+              <input type="search" name="search" class="queryField rounded-start col-7" placeholder="Введите запрос" id="queryField" minlength="2" required>
+              <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
+            </form>
+            <div class="masonry-btns col-1 text-end" id="masonryBtns">
               <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
               <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
             </div>
           </div>
           <div class="border col-2 filter-bar"></div>
-          <div class="col-10">
-            <div class="row row-cols-1 car-list" id="carList"></div>
+          <div class="col-10 h-100 content">
+            <div class="row row-cols-1 car-list" id="carList">
+              
+              <div class="notFound text-center fs-2 lh-lg">
+                <h2 class="fw-bold">Упс...</h2>
+                <p>
+                  <span class="aling-items-center">
+                    Указанный Вами автомобиль не найден...<i class="fas fa-sad-tear d-flex align-items-center"></i>
+                  </span>
+                  <span class="aling-items-center">
+                    Попробуйте ввести другое название... <i class="fas fa-smile-wink d-flex align-items-center"></i>
+                  </span>
+                </p>
+              </div>
 
-            <!-- <div class="card mb-3">
-              <div class="row p-3">
-                <div class="col-4">
-                  <div class="position-relative">
-                    <div class="card-labels position-absolute start-0">
-                      <div class="card-labels-top d-flex align-items-center">
-                        <span>TOP</span>
-                      </div>
-                      <div class="card-labels-vip d-flex align-items-center">
-                        <span>VIP</span>
-                      </div>
-                    </div>
-                    <img width="1" height="1" loading="lazy" src="http://dummyimage.com/225x169.jpg/cc0000/ffffff" alt="" class="card-img" />
-                  </div>
-                  <div class="card-rating my-3 text-center">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                  </div>
-                </div>
-                <div class="col-8">
-                  <h2 class="card-title fs-3 fw-bold mb-3">BMW M3 1.4 CVT (2010)</h2>
-                  <h3 class="card-price fs-3 d-flex align-items-center fw-bold mb-4">2 269 &#36;<span class="text-muted fs-5 fw-normal ms-4">69 453 &#8372;</span></h3>
-                  <ul class="card-base-info row mb-4">
-                    <li class="col-6 mb-3">
-                      <i class="fas fa-tachometer-alt me-1 text-center"></i> 394036 km
-                    </li>
-                    <li class="col-6 mb-3">
-                      <i class="fas fa-map-marker-alt me-1 text-center"></i> United States
-                    </li>
-                    <li class="col-6">
-                      <i class="fas fa-gas-pump me-1 text-center"></i> Benzin, 1.4l
-                    </li>
-                    <li class="col-6 d-flex">
-                      <span class="me-1 card-transmition"></span> CVT
-                    </li>
-                  </ul>
-                  <div class="card-consume mb-4">
-                    <h4 class="mb-3 fw-bolder">Fuel consumption (l/100km)</h4>
-                    <ul class="row">
-                      <li class="col-4">
-                        <i class="fas fa-city me-1"></i> 12.3
-                      </li>
-                      <li class="col-4">
-                        <i class="fas fa-road me-1"></i> 4.8
-                      </li>
-                      <li class="col-4">
-                        <i class="fas fa-exchange-alt me-1"></i> 8.4
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="card-vin mb-4 d-flex">
-                    <p class="border border-primary border-2 rounded">
-                      <span class="card-vin-label p-2">VIN</span><span class="p-2">1G6DW677550624991</span>
-                    </p>
-                  </div>
-                  <div class="card-paint d-flex align-items-center mb-4">
-                    Color: <span class="ms-2">Goldenrod</span>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <a href="" class="btn btn-primary fw-bold">
-                      <i class="fas fa-phone-alt me-2"></i> Call
-                    </a>
-                    <p class="ms-3 text-muted">Ellery Girardin</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer text-muted d-flex">
-                <small>
-                  <i class="far fa-clock me-1"></i>
-                  <span>11:11 12.01.2021</span>
-                </small>
-                <small class="ms-3">
-                  <i class="fas fa-eye me-1"></i>
-                  <span>5</span>
-                </small>
-              </div>
-            </div> -->
+
+            </div>
 
           </div>
-          <div class="text-center pt-3">
-            <button class="btn btn-primary" id="showMoreBtn">Показать еще</button>
+          <div class="py-3 d-flex flex-column justify-content-center align-items-center showBtns">
+            <button class="btn btn-primary fs-5" id="showMoreBtn">Показать еще</button>
+            <button class="btn btn-success mt-3" id="showAllBtn">Показать все</button>
           </div>
         </div>
       </div>
     </div>
 
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script defer src="https://kit.fontawesome.com/a19e82d2c7.js" crossorigin="anonymous"></script>
     <script src="js/data.js"></script>

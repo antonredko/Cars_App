@@ -1,8 +1,11 @@
-const CARS = [...DATA]
+let CARS = [...DATA]
 const carListEl = document.getElementById('carList')
 const masonryBtnsEl = document.getElementById('masonryBtns')
 const sortingSelectEl = document.getElementById('sortingSelect')
+const showBtnsEl = document.getElementById('showBtns')
 const showMoreBtnEl = document.getElementById('showMoreBtn')
+const showAllBtnEl = document.getElementById('showAllBtn')
+const searchFormEl = document.getElementById('searchForm')
 const dateFormatter = new Intl.DateTimeFormat()
 const numberFormatter = new Intl.NumberFormat()
 const timeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -22,7 +25,37 @@ const uahFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0
 })
 const exchangeCourseUSD = 28.35194
-let countOfCards = 10
+
+
+searchFormEl.addEventListener('submit', function(event) {
+  event.preventDefault()
+
+  let query = this.search.value.toLowerCase().trim().split(' ')
+  const searchFields = ['make', 'model', 'year']
+
+  CARS = DATA.filter(car => {
+    return query.every(word => {
+      return searchFields.some(field => {
+        return `${car[field]}`.toLowerCase().trim().includes(word)
+      })
+    })
+  })
+
+  if (CARS.length) {
+    renderCards(carListEl, CARS, false, true)
+    this.search.blur()
+  } else {
+    masonryBtnsEl.querySelectorAll('.btn').forEach(btn => {
+      btn.setAttribute('disabled', '')
+    })
+
+    // carListEl.innerHTML = `<div class='text-center py-4'>
+    //     <p>хуй</p>
+    //   </div>`
+  }
+  
+})
+
 
 masonryBtnsEl.addEventListener('click', event => {
   const btnEl = event.target.closest('.btn')
@@ -48,66 +81,67 @@ masonryBtnsEl.addEventListener('click', event => {
   }
 })
 
+
 sortingSelectEl.addEventListener('change', function () {
-  switch (this.value) {
+  let [key, type] = this.value.split('-')
 
-    case ('fromCheap'):
-      CARS.sort((a, b) => a.price - b.price)
-      renderCards(carListEl, CARS)
-      break
-    
-    case ('fromDear'):
-      CARS.sort((a, b) => b.price - a.price)
-      renderCards(carListEl, CARS)
-      break
-    
-    case ('date'):
-      CARS.sort((a, b) => b.timestamp - a.timestamp)
-      renderCards(carListEl, CARS)
-      break
-    
-    case ('firstOld'):
-      CARS.sort((a, b) => a.year - b.year)
-      renderCards(carListEl, CARS)
-      break
-    
-    case ('firstNew'):
-      CARS.sort((a, b) => b.year - a.year)
-      renderCards(carListEl, CARS)
-      break
-    
-    case ('lessMileage'):
-      CARS.sort((a, b) => a.odo - b.odo)
-      renderCards(carListEl, CARS)
-      break
-    
-    case ('moreMileage'):
-      CARS.sort((a, b) => b.odo - a.odo)
-      renderCards(carListEl, CARS)
-      break
-  }
-})
-
-showMoreBtnEl.addEventListener('click', function() {
-  countOfCards += 10
-  renderCards(carListEl, CARS)
-})
-
-renderCards(carListEl, CARS)
-
-function renderCards(where, array) {
-  where.innerHTML = ''
-  
-  let showedCards = array.slice(0, countOfCards)
-
-  showedCards.forEach(element => {
-    where.insertAdjacentHTML('beforeEnd', Card(element))
+  CARS.sort((a, b) => {
+    if (type == 'inc') {
+      return a[key] - b[key]
+    } else if (type == 'dec') {
+      return b[key] - a[key]
+    }
   })
 
-  if (showedCards.length === array.length) {
+  if (key && type) {
+    renderCards(carListEl, CARS)
+  } else {
+    renderCards(carListEl, DATA)
+  }
+})
+
+
+showMoreBtnEl.addEventListener('click', function() {
+  renderCards(carListEl, CARS, true)
+})
+
+
+showAllBtnEl.addEventListener('click', function() {
+  renderCards(carListEl, CARS, true, true)
+})
+
+
+renderCards(carListEl, CARS, true)
+
+
+function renderCards(where, array, add, all) {
+  let countOfCards = all ? array.length : 10
+  let children = 0
+
+  if (add) {
+    children = where.children.length
+  } else {
+    children = 0
+    countOfCards = all ? countOfCards : where.children.length || countOfCards
+    where.innerHTML = ''
+  }
+
+  for (let i = children; i < children + countOfCards; i++) {
+    const element = array[i]
+
+    if (element) {
+      where.insertAdjacentHTML('beforeEnd', Card(element))
+    } else {
+      break
+    }
+  }
+
+  if (where.children.length === array.length) {
     showMoreBtnEl.classList.add('d-none')
+    showAllBtnEl.classList.add('d-none')
   }
 }
+
 
 function Card(data) {
   let stars = ''
@@ -141,20 +175,20 @@ function Card(data) {
                 <h3 class="card-price fs-3 d-flex align-items-center fw-bold mb-4">${usdFormatter.format(data.price)} <span class="text-muted fs-5 fw-normal ms-4">${uahFormatter.format(priceUAH)}</span></h3>
                 <ul class="card-base-info row mb-4">
                   <li class="col-6 mb-3">
-                    <i class="fas fa-tachometer-alt me-1 text-center"></i> ${numberFormatter.format(data.odo)} km
+                    <i class="fas fa-tachometer-alt me-1 text-center"></i> ${numberFormatter.format(data.odo)} км
                   </li>
                   <li class="col-6 mb-3">
                     <i class="fas fa-map-marker-alt me-1 text-center"></i>${data.country}
                   </li>
                   <li class="col-6">
-                    <i class="fas fa-gas-pump me-1 text-center"></i> ${data.fuel}${data.engine_volume ? `, ${data.engine_volume}l` : ''}
+                    <i class="fas fa-gas-pump me-1 text-center"></i> ${data.fuel}${data.engine_volume ? `, ${data.engine_volume} л` : ''}
                   </li>
                   <li class="col-6 d-flex">
                     <span class="me-1 card-transmition"></span> ${data.transmission}
                   </li>
                 </ul>
                 <div class="card-consume mb-4">
-                  <h4 class="mb-3 fw-bolder">Fuel consumption (l/100km)</h4>
+                  <h4 class="mb-3 fw-bolder">Расход топлива (л/100км)</h4>
                   <ul class="row">
                     <li class="col-4">
                       <i class="fas fa-city me-1"></i> ${data.consume?.city || "-"}
@@ -168,10 +202,10 @@ function Card(data) {
                   </ul>
                 </div>
                 ${data.vin ? `<div class="card-vin mb-4 d-flex"><p class="border border-primary border-2 rounded"><span class="card-vin-label p-2">VIN</span><span class="p-2">${data.vin}</span></p></div>` : ""}
-                ${data.color ? `<div class="card-paint d-flex align-items-center mb-4">Color: <span class="ms-2">${data.color}</span></div>` : ""}
+                ${data.color ? `<div class="card-paint d-flex align-items-center mb-4">Цвет: <span class="ms-2">${data.color}</span></div>` : ""}
                 <div class="d-flex align-items-center">
                   <a href="tel:${data.phone}" class="btn btn-primary fw-bold call-btn">
-                    <i class="fas fa-phone-alt me-2"></i> Call
+                    <i class="fas fa-phone-alt me-2"></i> Позвонить
                   </a>
                   <p class="ms-3 text-muted">${data.seller}</p>
                 </div>
@@ -189,6 +223,7 @@ function Card(data) {
             </div>
           </div>`
 }
+
 
 // Utils
 
