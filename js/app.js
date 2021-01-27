@@ -6,6 +6,8 @@ const showBtnsEl = document.getElementById('showBtns')
 const showMoreBtnEl = document.getElementById('showMoreBtn')
 const showAllBtnEl = document.getElementById('showAllBtn')
 const searchFormEl = document.getElementById('searchForm')
+const notFoundEl = document.getElementById('notFound')
+const backToListEl = document.getElementById('backToList')
 const dateFormatter = new Intl.DateTimeFormat()
 const numberFormatter = new Intl.NumberFormat()
 const timeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -41,18 +43,20 @@ searchFormEl.addEventListener('submit', function(event) {
     })
   })
 
-  if (CARS.length) {
+  // CARS = []
+
+  // if (CARS.length) {
     renderCards(carListEl, CARS, false, true)
-    this.search.blur()
-  } else {
-    masonryBtnsEl.querySelectorAll('.btn').forEach(btn => {
-      btn.setAttribute('disabled', '')
-    })
+  //   this.search.blur()
+  // } else {
+  //   masonryBtnsEl.querySelectorAll('.btn').forEach(btn => {
+  //     btn.disabled = true
+  //   })
 
     // carListEl.innerHTML = `<div class='text-center py-4'>
     //     <p>хуй</p>
     //   </div>`
-  }
+  // }
   
 })
 
@@ -101,14 +105,19 @@ sortingSelectEl.addEventListener('change', function () {
 })
 
 
-showMoreBtnEl.addEventListener('click', function() {
+showMoreBtnEl.addEventListener('click', () => {
   renderCards(carListEl, CARS, true)
 })
 
 
-showAllBtnEl.addEventListener('click', function() {
+showAllBtnEl.addEventListener('click', () => {
   renderCards(carListEl, CARS, true, true)
 })
+
+
+// backToListEl.addEventListener('click', () => {
+//   renderCards(carListEl, CARS, true)
+// })
 
 
 renderCards(carListEl, CARS, true)

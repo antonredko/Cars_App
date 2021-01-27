@@ -11,12 +11,12 @@
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3">Список автомобилей</h1>
+        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3 border-dark">Список автомобилей</h1>
         <div class="row">
           <div class="top-bar my-3 d-flex justify-content-between col-12">
             <label class="d-flex align-items-center col-4">
               Сортировка:
-              <select name="sortingSelect" class="sortingSelect form-select ms-2" id="sortingSelect">
+              <select name="sortingSelect" class="sortingSelect form-select ms-2 h-100" id="sortingSelect">
                 <option class="py-3" value="default" selected>По умолчанию</option>
                 <option class="py-3" value="price-inc">От дешевых к дорогим</option>
                 <option class="py-3" value="price-dec">От дорогих к дешевым</option>
@@ -27,35 +27,32 @@
                 <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
               </select>
             </label>
-            <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex align-items-center justify-content-center">
-              <input type="search" name="search" class="queryField rounded-start col-7" placeholder="Введите запрос" id="queryField" minlength="2" required>
-              <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
+            <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
+                <div class="form-floating w-100">
+                  <input type="search" name="search" class="form-control rounded-0  rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
+                  <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
+                </div>
+                <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
             </form>
-            <div class="masonry-btns col-1 text-end" id="masonryBtns">
+            <div class="masonry-btns col-1 d-flex justify-content-between align-items-center px-1" id="masonryBtns">
               <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
               <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
             </div>
           </div>
           <div class="border col-2 filter-bar"></div>
-          <div class="col-10 h-100 content">
-            <div class="row row-cols-1 car-list" id="carList">
-              
-              <div class="notFound text-center fs-2 lh-lg">
-                <h2 class="fw-bold">Упс...</h2>
-                <p>
-                  <span class="aling-items-center">
-                    Указанный Вами автомобиль не найден...<i class="fas fa-sad-tear d-flex align-items-center"></i>
-                  </span>
-                  <span class="aling-items-center">
-                    Попробуйте ввести другое название... <i class="fas fa-smile-wink d-flex align-items-center"></i>
-                  </span>
-                </p>
-              </div>
-
-
-            </div>
-
+          <div class="col-9 offset-1">
+            <div class="row row-cols-1 car-list" id="carList"></div>
           </div>
+
+          <!-- <div class="notFound text-center lh-lg row" id="notFound">
+            <h2 class="fw-bold fs-2">Автомобиль не найден <i class="fas fa-frown"></i></h2>
+            <p class="fs-4 col-12">
+              <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>
+              <span class="col-12 justify-content-center">или</span>
+              <button class="btn border-0 fs-4 text-decoration-underline back-to-list" id="backToList">вернитесь к списку</button>
+            </p>
+          </div> -->
+            
           <div class="py-3 d-flex flex-column justify-content-center align-items-center showBtns">
             <button class="btn btn-primary fs-5" id="showMoreBtn">Показать еще</button>
             <button class="btn btn-success mt-3" id="showAllBtn">Показать все</button>

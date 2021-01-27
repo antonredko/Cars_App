@@ -24,6 +24,8 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #e8e3e3;
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -48,9 +50,6 @@ a, span, ::before, ::after{
     text-decoration: none;
     color: inherit;
 }
-body{
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-}
 .container{
     width: 100%;
     max-width: 1200px;
@@ -59,19 +58,36 @@ body{
 html{
     scroll-behavior: smooth;
 }
-.queryField{
+/* .queryField{
 	padding: .375rem 1.75rem .375rem .75rem;
 	border: 1px solid #ced4da;
-}
-.queryField::placeholder{
+} */
+/* .queryField::placeholder{
 	transition: .3s;
 }
 .queryField:focus::placeholder{
 	opacity: 0;
 	transform: translateX(20px);
+} */
+/* .form-control{
+	width: auto;
+} */
+/* .car-list{
+	background: linear-gradient(rgb(255 255 255/80%), rgb(255 255 255/80%)), url('../img/not_found_bgr.webp') no-repeat center/contain;
+} */
+.form-floating>.form-control{
+	height: calc(3rem - 10px);
+}
+.form-floating>.form-control,
+.form-floating>label{
+    padding: .5rem 1.75rem .5rem .75rem;
 }
 .notFound i{
-	color: #ffcc00;
+	color: #f4c44b;
+}
+.back-to-list:hover{
+	text-decoration: none;
+	color: #f7643b;
 }
 .card-labels{
 	font-size: 14px;
