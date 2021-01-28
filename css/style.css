@@ -58,23 +58,17 @@ a, span, ::before, ::after{
 html{
     scroll-behavior: smooth;
 }
-/* .queryField{
-	padding: .375rem 1.75rem .375rem .75rem;
-	border: 1px solid #ced4da;
-} */
-/* .queryField::placeholder{
-	transition: .3s;
+.favorites{
+	top: 16px;
+	right: 16px;
 }
-.queryField:focus::placeholder{
-	opacity: 0;
-	transform: translateX(20px);
-} */
-/* .form-control{
-	width: auto;
-} */
-/* .car-list{
+.to-favorites{
+	color: #fff;
+}
+.notFound{
 	background: linear-gradient(rgb(255 255 255/80%), rgb(255 255 255/80%)), url('../img/not_found_bgr.webp') no-repeat center/contain;
-} */
+	padding: 200px 0;
+}
 .form-floating>.form-control{
 	height: calc(3rem - 10px);
 }
@@ -82,12 +76,14 @@ html{
 .form-floating>label{
     padding: .5rem 1.75rem .5rem .75rem;
 }
-.notFound i{
+.frown{
 	color: #f4c44b;
 }
-.back-to-list:hover{
-	text-decoration: none;
-	color: #f7643b;
+.back-to-list{
+	background-color: #fff;
+}
+.filter-bar{
+	background-color: #fff;
 }
 .card-labels{
 	font-size: 14px;

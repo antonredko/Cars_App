@@ -2,12 +2,10 @@ let CARS = [...DATA]
 const carListEl = document.getElementById('carList')
 const masonryBtnsEl = document.getElementById('masonryBtns')
 const sortingSelectEl = document.getElementById('sortingSelect')
-const showBtnsEl = document.getElementById('showBtns')
 const showMoreBtnEl = document.getElementById('showMoreBtn')
 const showAllBtnEl = document.getElementById('showAllBtn')
 const searchFormEl = document.getElementById('searchForm')
 const notFoundEl = document.getElementById('notFound')
-const backToListEl = document.getElementById('backToList')
 const dateFormatter = new Intl.DateTimeFormat()
 const numberFormatter = new Intl.NumberFormat()
 const timeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -29,6 +27,41 @@ const uahFormatter = new Intl.NumberFormat(undefined, {
 const exchangeCourseUSD = 28.35194
 
 
+carListEl.addEventListener('click', event => {
+  const btnEl = event.target.closest('.to-favorites')
+  const cardEl = event.target.closest('.card')
+
+  if (btnEl && cardEl) {
+    const carModel = cardEl.dataset.carmodel
+    const carId = cardEl.dataset.carid
+
+    // if (localStorage.length) {
+      const storageValue = localStorage.getItem(carModel)
+
+      if (storageValue && storageValue === carId) {
+        localStorage.removeItem(carModel)
+
+        btnEl.classList.remove('btn-warning')
+        btnEl.classList.add('btn-secondary')
+
+      } else {
+        localStorage.setItem(carModel, carId)
+
+        btnEl.classList.remove('btn-secondary')
+        btnEl.classList.add('btn-warning')
+      }
+
+    // } else {
+    //   localStorage.setItem(carModel, carId)
+
+    //   btnEl.classList.remove('btn-secondary')
+    //   btnEl.classList.add('btn-warning')
+    // }
+  }
+})
+
+// console.log(Boolean(localStorage.length))
+
 searchFormEl.addEventListener('submit', function(event) {
   event.preventDefault()
 
@@ -43,21 +76,28 @@ searchFormEl.addEventListener('submit', function(event) {
     })
   })
 
-  // CARS = []
-
-  // if (CARS.length) {
+  if (CARS.length) {
     renderCards(carListEl, CARS, false, true)
-  //   this.search.blur()
-  // } else {
-  //   masonryBtnsEl.querySelectorAll('.btn').forEach(btn => {
-  //     btn.disabled = true
-  //   })
+  } else {
+      carListEl.innerHTML = ''
 
-    // carListEl.innerHTML = `<div class='text-center py-4'>
-    //     <p>хуй</p>
-    //   </div>`
-  // }
+      notFoundEl.classList.remove('d-none')
+
+      showMoreBtnEl.classList.add('d-none')
+      showAllBtnEl.classList.add('d-none')
+
+      document.getElementById('backToList').addEventListener('click', () => {
+        renderCards(carListEl, DATA, true)
+
+        notFoundEl.classList.add('d-none')
+
+        showMoreBtnEl.classList.remove('d-none')
+        showAllBtnEl.classList.remove('d-none')
+      })
+    }
   
+  this.blur()
+  this.reset()
 })
 
 
@@ -70,6 +110,7 @@ masonryBtnsEl.addEventListener('click', event => {
     if (type == '1') {
       carListEl.classList.remove('row-cols-2')
       carListEl.classList.add('row-cols-1')
+
     } else if (type == '2') {
       carListEl.classList.remove('row-cols-1')
       carListEl.classList.add('row-cols-2')
@@ -113,11 +154,6 @@ showMoreBtnEl.addEventListener('click', () => {
 showAllBtnEl.addEventListener('click', () => {
   renderCards(carListEl, CARS, true, true)
 })
-
-
-// backToListEl.addEventListener('click', () => {
-//   renderCards(carListEl, CARS, true)
-// })
 
 
 renderCards(carListEl, CARS, true)
@@ -166,7 +202,10 @@ function Card(data) {
     }
   }
 
-  return `<div class="card mb-3 p-0">
+  return `<div class="card mb-3 p-0" data-carmodel="${data.model}" data-carid="${data.id}">
+            <div class="favorites position-absolute">  
+              <button class="btn btn-secondary border-0 rounded-3 fs-5 to-favorites"><i class="fas fa-star"></i></button>
+            </div>
             <div class="row p-3 h-100">
               <div class="col-5">
                 <div class="position-relative">

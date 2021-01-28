@@ -16,7 +16,7 @@
           <div class="top-bar my-3 d-flex justify-content-between col-12">
             <label class="d-flex align-items-center col-4">
               Сортировка:
-              <select name="sortingSelect" class="sortingSelect form-select ms-2 h-100" id="sortingSelect">
+              <select name="sortingSelect" class="sorting-select form-select ms-2 h-100" id="sortingSelect">
                 <option class="py-3" value="default" selected>По умолчанию</option>
                 <option class="py-3" value="price-inc">От дешевых к дорогим</option>
                 <option class="py-3" value="price-dec">От дорогих к дешевым</option>
@@ -27,9 +27,9 @@
                 <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
               </select>
             </label>
-            <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
+            <form method="GET" name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
                 <div class="form-floating w-100">
-                  <input type="search" name="search" class="form-control rounded-0  rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
+                  <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
                   <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
                 </div>
                 <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
@@ -39,23 +39,23 @@
               <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
             </div>
           </div>
-          <div class="border col-2 filter-bar"></div>
+          <div class="col-2 filter-bar"></div>
           <div class="col-9 offset-1">
             <div class="row row-cols-1 car-list" id="carList"></div>
-          </div>
-
-          <!-- <div class="notFound text-center lh-lg row" id="notFound">
-            <h2 class="fw-bold fs-2">Автомобиль не найден <i class="fas fa-frown"></i></h2>
-            <p class="fs-4 col-12">
-              <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>
-              <span class="col-12 justify-content-center">или</span>
-              <button class="btn border-0 fs-4 text-decoration-underline back-to-list" id="backToList">вернитесь к списку</button>
-            </p>
-          </div> -->
             
-          <div class="py-3 d-flex flex-column justify-content-center align-items-center showBtns">
+            
+            <div class="notFound text-center lh-lg vh-75 fw-bold d-none" id="notFound">
+              <h2 class="fs-2">Автомобиль не найден... <i class="fas fa-frown frown"></i></h2>
+              <p class="fs-4">
+                <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>
+                <span class="col-12 justify-content-center">или</span>
+                <button class="btn btn-outline-primary fs-4 back-to-list" id="backToList"><i class="fas fa-arrow-left"></i> вернитесь к списку</button>
+              </p>
+            </div>
+          </div>
+          <div class="py-3 d-flex flex-column justify-content-center align-items-center">
             <button class="btn btn-primary fs-5" id="showMoreBtn">Показать еще</button>
-            <button class="btn btn-success mt-3" id="showAllBtn">Показать все</button>
+            <button class="btn btn-success mt-3 text" id="showAllBtn">Показать все</button>
           </div>
         </div>
       </div>
