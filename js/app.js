@@ -58,6 +58,8 @@ carListEl.addEventListener('click', event => {
       btnEl.classList.add('btn-warning')
     }
   }
+  
+  btnEl.blur()
 })
 
 
