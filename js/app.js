@@ -35,9 +35,9 @@ carListEl.addEventListener('click', event => {
     const carModel = cardEl.dataset.carmodel
     const carId = cardEl.dataset.carid
 
-    // if (localStorage.length) {
+    if (localStorage.length) {
       const storageValue = localStorage.getItem(carModel)
-
+      
       if (storageValue && storageValue === carId) {
         localStorage.removeItem(carModel)
 
@@ -51,16 +51,15 @@ carListEl.addEventListener('click', event => {
         btnEl.classList.add('btn-warning')
       }
 
-    // } else {
-    //   localStorage.setItem(carModel, carId)
+    } else {
+      localStorage.setItem(carModel, carId)
 
-    //   btnEl.classList.remove('btn-secondary')
-    //   btnEl.classList.add('btn-warning')
-    // }
+      btnEl.classList.remove('btn-secondary')
+      btnEl.classList.add('btn-warning')
+    }
   }
 })
 
-// console.log(Boolean(localStorage.length))
 
 searchFormEl.addEventListener('submit', function(event) {
   event.preventDefault()
@@ -78,6 +77,7 @@ searchFormEl.addEventListener('submit', function(event) {
 
   if (CARS.length) {
     renderCards(carListEl, CARS, false, true)
+    
   } else {
       carListEl.innerHTML = ''
 
@@ -203,6 +203,9 @@ function Card(data) {
   }
 
   return `<div class="card mb-3 p-0" data-carmodel="${data.model}" data-carid="${data.id}">
+            <div class="favorites position-absolute">
+              ${localStorage.getItem(data.model) === data.id ? `<button class="btn btn-warning border-0 rounded-3 fs-5 to-favorites"><i class="fas fa-star"></i></button>` : `<button class="btn btn-secondary border-0 rounded-3 fs-5 to-favorites"><i class="fas fa-star"></i></button>`}
+            </div>
             <div class="favorites position-absolute">  
               <button class="btn btn-secondary border-0 rounded-3 fs-5 to-favorites"><i class="fas fa-star"></i></button>
             </div>
