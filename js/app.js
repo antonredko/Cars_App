@@ -59,7 +59,6 @@ carListEl.addEventListener('click', event => {
     }
   }
   
-  btnEl.blur()
 })
 
 
