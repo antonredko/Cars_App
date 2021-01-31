@@ -27,12 +27,12 @@
                 <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
               </select>
             </label>
-            <form method="GET" name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
-                <div class="form-floating w-100">
-                  <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
-                  <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
+            <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
+              <div class="form-floating w-100">
+                <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
+                <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
                 </div>
-                <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
+              <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
             </form>
             <div class="masonry-btns col-1 d-flex justify-content-between align-items-center px-1" id="masonryBtns">
               <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
@@ -49,11 +49,11 @@
               <p class="fs-4">
                 <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>
                 <span class="col-12 justify-content-center">или</span>
-                <button class="btn btn-outline-primary fs-4 back-to-list" id="backToList"><i class="fas fa-arrow-left"></i> вернитесь к списку</button>
+                <button class="btn btn-outline-primary fs-4 back-to-list" id="backToListBtn"><i class="fas fa-arrow-left"></i> вернитесь к списку</button>
               </p>
             </div>
           </div>
-          <div class="py-3 d-flex flex-column justify-content-center align-items-center">
+          <div class="py-3 d-flex flex-column justify-content-center align-items-center" id="showBlockBtns">
             <button class="btn btn-primary fs-5" id="showMoreBtn">Показать еще</button>
             <button class="btn btn-success mt-3 text" id="showAllBtn">Показать все</button>
           </div>
