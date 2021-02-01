@@ -6,6 +6,7 @@ const showMoreBtnEl = document.getElementById('showMoreBtn')
 const showAllBtnEl = document.getElementById('showAllBtn')
 const showBlockBtnsEl = document.getElementById('showBlockBtns')
 const searchFormEl = document.getElementById('searchForm')
+const filterFormEl = document.getElementById('filterForm')
 const notFoundEl = document.getElementById('notFound')
 const backToListBtnEl = document.getElementById('backToListBtn')
 const dateFormatter = new Intl.DateTimeFormat()
@@ -44,7 +45,7 @@ function createFilterBlocks(filterFormEl,cars) {
   filterFields.forEach(field => {
     blocksHtml += createFilterBlock(cars,field)
   })
-  
+
   filterFormEl.insertAdjacentHTML('afterBegin', blocksHtml)
 }
 
