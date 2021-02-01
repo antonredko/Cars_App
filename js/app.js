@@ -32,7 +32,62 @@ if (!localStorage.wishList) {
   localStorage.wishList = JSON.stringify([])
 }
 const wishListLS = JSON.parse(localStorage.wishList)
+const filterFields = ['make', 'fuel', 'transmission']
 
+createFilterBlocks(filterFormEl,CARS)
+
+
+function createFilterBlocks(filterFormEl,cars) {
+  
+  let blocksHtml = ''
+  filterFields.forEach(field => {
+    blocksHtml += createFilterBlock(cars,field)
+  })
+  filterFormEl.insertAdjacentHTML('afterBegin', blocksHtml)
+}
+
+function createFilterBlock(cars,field) {
+  let inputsHtml = ''
+  const uValues = [...new Set(cars.map(car => car[field]))].sort()
+  console.log(uValues);
+
+  uValues.forEach(value => {
+    inputsHtml += createFilterCheckbox(value, field)
+  })  
+  return `<fieldset class="row mb-3">
+  <legend class="col-form-label col-sm-2 pt-0">${field}</legend>
+  ${inputsHtml}
+</fieldset>
+  `
+}
+
+function createFilterCheckbox(value, field) {
+  return `<label class="form-check-label">
+  <input class="form-check-input" type="checkbox" name="${field}" value="${value}">
+  <span>${value}</span>
+</label>`
+}
+
+filterFormEl.addEventListener('submit', event => {
+  const form = event.target
+  event.preventDefault()
+  const filterOptions = {}
+  filterFields.forEach(field => {
+    const checkedValues = [...form[field]].reduce((accu, curr) => {
+      if (curr.checked) {
+        //[1,2,3]
+        return [...accu, curr.value]
+      } else{
+        return [...accu]
+      }
+    }, [])
+    filterOptions[field] = checkedValues
+
+    console.log(form[field]);
+  })
+  console.log('FILTER OPTIONS',filterOptions);
+  console.dir(filterFormEl);
+})
 
 carListEl.addEventListener('click', event => {
   const btnEl = event.target.closest('.to-favorites')
