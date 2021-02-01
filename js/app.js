@@ -59,17 +59,24 @@ function createFilterBlock(cars,field) {
   })
 
   return `<fieldset class="row mb-3">
-            <legend class="col-form-label col-sm-2 pt-0">${field}</legend>
+            <legend class="col-form-label col-sm-2 pt-0">${
+              field == "make"
+                ? "Марка"
+                : field == "fuel"
+                ? "Топливо"
+                : field == "transmission" ? 'Трансмиссия' 
+                : ''
+            }</legend>
             ${inputsHtml}
-          </fieldset>`
+          </fieldset>`;
 }
 
 
 function createFilterCheckbox(value, field) {
-  return `<label class="form-check-label">
-            <input class="form-check-input" type="checkbox" name="${field}" value="${value}">
+  return `<label class="form-check-label d-flex align-items-center mb-2">
+            <input class="form-check-input mt-0 me-2" type="checkbox" name="${field}" value="${value}">
             <span>${value}</span>
-          </label>`
+          </label>`;
 }
 
 
