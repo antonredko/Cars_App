@@ -63,7 +63,7 @@ html{
 	right: 16px;
 }
 .to-favorites{
-	color: #fff;
+	color: var(--bs-white);
 }
 .notFound{
 	background: linear-gradient(rgb(255 255 255/80%), rgb(255 255 255/80%)), url('../img/not_found_bgr.webp') no-repeat center/contain;
@@ -80,14 +80,11 @@ html{
 	color: #f4c44b;
 }
 .back-to-list{
-	background-color: #fff;
-}
-.filter-bar{
-	background-color: #fff;
+	background-color: var(--bs-white);
 }
 .card-labels{
 	font-size: 14px;
-	color: #fff;
+	color: var(--bs-white);
 	top: 3px;
 }
 .card-labels>:nth-child(n + 2){
@@ -132,7 +129,7 @@ html{
 	justify-content: center;
 }
 .card-vin-label{
-	color: #fff;
+	color: var(--bs-white);
 	background-color: #0d6efd;
 }
 .card-rating{
@@ -143,4 +140,8 @@ html{
 	width: 18px;
 	height: 16px;
 	background: url("data:image/svg+xml,%0A%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7.5' cy='7.5' r='7' stroke='%23DB5C4C'/%3E%3Cpath d='M4.5 4V7.5M4.5 11V7.5M4.5 7.5H7.5M7.5 7.5V4M7.5 7.5V11M7.5 7.5H10.5V4' stroke='%23DB5C4C'/%3E%3C/svg%3E%0A") no-repeat center/contain;
+}
+.filter-block{
+	height: 150px;
+	background-color: var(--bs-white);
 }

@@ -58,12 +58,10 @@ function createFilterBlock(cars,field) {
     inputsHtml += createFilterCheckbox(value, field)
   })
 
-  return `<fieldset class="row mb-3">
-            <legend class="col-form-label col-sm-2 pt-0">${
-              field == "make"
-                ? "Марка"
-                : field == "fuel"
-                ? "Топливо"
+  return `<fieldset class="row mb-3 py-1 rounded overflow-auto filter-block">
+            <legend class="col-form-label col-sm-2 pt-0 fw-bold">${
+              field == "make" ? "Марка"
+                : field == "fuel" ? "Топливо"
                 : field == "transmission" ? 'Трансмиссия' 
                 : ''
             }</legend>
