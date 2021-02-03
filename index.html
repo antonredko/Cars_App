@@ -39,9 +39,18 @@
               <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
             </div>
           </div>
-          <div class="col-2 filter-bar rounded">
-            <h4 class="py-3 text-center fw-bold text-uppercase">Фильтры</h4>
-            <form class="filter-form" id="filterForm" name="filterForm">
+          <div class="col-2 filter-bar rounded position-relative">
+            <form class="filter-form position-sticky start-0" id="filterForm" name="filterForm">
+
+              <!-- <fieldset class="row mb-3 rounded filter-block overflow-auto">
+                <legend class="col-form-label col-sm-2 pt-0 fw-bold">Цена</legend>
+                <label class="form-check-label d-flex align-items-center mb-2">
+                  <input class="col-5" type="text" name="price" placeholder="от">
+                  <span class="col-2 align-items-center justify-content-center">-</span>
+                  <input class="col-5" type="text" name="price" placeholder="до">
+                </label>
+              </fieldset> -->
+
               <button type="submit" class="btn btn-primary w-100">Показать</button>
             </form>
           </div>

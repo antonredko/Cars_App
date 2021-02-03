@@ -33,38 +33,45 @@ if (!localStorage.wishList) {
   localStorage.wishList = JSON.stringify([])
 }
 const wishListLS = JSON.parse(localStorage.wishList)
-const filterFields = ['make', 'fuel', 'transmission']
+const searchFields = ['make', 'model', 'year']
+const filterFields = ['make', 'fuel', 'transmission', "price"]
 
 
-createFilterBlocks(filterFormEl,CARS)
+createFilterBlocks(filterFormEl, CARS)
 
 
-function createFilterBlocks(filterFormEl,cars) {
+function createFilterBlocks(where, cars) {
   let blocksHtml = ''
 
   filterFields.forEach(field => {
-    blocksHtml += createFilterBlock(cars,field)
+    blocksHtml += createFilterBlock(cars, field)
   })
 
-  filterFormEl.insertAdjacentHTML('afterBegin', blocksHtml)
+  where.insertAdjacentHTML('afterBegin', blocksHtml)
 }
 
 
-function createFilterBlock(cars,field) {
+function createFilterBlock(cars, field) {
   let inputsHtml = ''
-  const uValues = [...new Set(cars.map(car => car[field]))].sort()
 
-  uValues.forEach(value => {
-    inputsHtml += createFilterCheckbox(value, field)
-  })
+  if (field == "price") {
+    inputsHtml += createFilterRange(field)
+  } else {
+    const uValues = [...new Set(cars.map(car => car[field]))].sort()
 
-  return `<fieldset class="row mb-3 py-1 rounded overflow-auto filter-block">
-            <legend class="col-form-label col-sm-2 pt-0 fw-bold">${
-              field == "make" ? "Марка"
+    uValues.forEach(value => {
+      inputsHtml += createFilterCheckbox(value, field)
+    })
+  }
+
+  return `<fieldset class="row mb-3 rounded filter-block overflow-auto">
+            <legend class="col-form-label col-sm-2 pt-0 fw-bold">
+              ${field == "make" ? "Марка"
                 : field == "fuel" ? "Топливо"
-                : field == "transmission" ? 'Трансмиссия' 
-                : ''
-            }</legend>
+                : field == "transmission" ? 'Трансмиссия'
+                : field == "price" ? 'Цена'
+                : ''}
+            </legend>
             ${inputsHtml}
           </fieldset>`;
 }
@@ -78,23 +85,52 @@ function createFilterCheckbox(value, field) {
 }
 
 
+function createFilterRange(field) {
+  return `<label class="form-check-label d-flex align-items-center mb-2">
+            <input class="col-5" type="text" name="${field}" placeholder="от">
+            <span class="col-2 align-items-center justify-content-center">-</span>
+            <input class="col-5" type="text" name="${field}" placeholder="до">
+          </label>`
+}
+
+
 filterFormEl.addEventListener('submit', event => {
   event.preventDefault()
-
+  
   const form = event.target
   const filterOptions = {}
 
   filterFields.forEach(field => {
-    const checkedValues = [...form[field]].reduce((accu, curr) => {
-      if (curr.checked) {
-        return [...accu, curr.value]
-      } else{
-        return [...accu]
-      }
-    }, [])
-
-    filterOptions[field] = checkedValues
+    if (field == "price") {
+      const priceValues = [...form[field]].map(item => {
+        return item.value
+      })
+      filterOptions[field] = priceValues
+    } else {
+      const checkedValues = [...form[field]].reduce((accu, curr) => {
+        if (curr.checked) {
+          return [...accu, curr.value];
+        } else {
+          return [...accu]
+        }
+      }, [])
+      filterOptions[field] = checkedValues
+    }
   })
+  
+  const filterValues = Object.values(filterOptions)
+  
+  CARS = DATA.filter(car => {
+    return filterValues.every(values => {
+      return values.length == 0 ? true : values.some(value => {
+        return filterFields.some(field => {
+          return `${car[field]}`.includes(value)
+        })
+      })
+    })
+  })
+
+  renderCards(carListEl, CARS, false, true)
 })
 
 
@@ -127,7 +163,6 @@ searchFormEl.addEventListener('submit', function(event) {
   notFoundEl.classList.add("d-none");
 
   let query = this.search.value.toLowerCase().trim().split(' ')
-  const searchFields = ['make', 'model', 'year']
 
   CARS = DATA.filter(car => {
     return query.every(word => {
@@ -143,7 +178,6 @@ searchFormEl.addEventListener('submit', function(event) {
     carListEl.innerHTML = ''
 
     notFoundEl.classList.remove('d-none')
-
     showBlockBtnsEl.classList.add('d-none')
   }
   
