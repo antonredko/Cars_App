@@ -117,14 +117,25 @@ filterFormEl.addEventListener('submit', event => {
       filterOptions[field] = checkedValues
     }
   })
-  
   const filterValues = Object.values(filterOptions)
+  
   
   CARS = DATA.filter(car => {
     return filterValues.every(values => {
-      return values.length == 0 ? true : values.some(value => {
+      return !values.length ? true : values.some(value => {
+        // if (value == "0" || value == "") {
+        //   return 0
+        // }
         return filterFields.some(field => {
+          if (
+            field == "price" &&
+            car[field] >= Math.min(...values) &&
+            car[field] <= Math.max(...values)
+          ) {
+            return true;
+          }
           return `${car[field]}`.includes(value)
+            
         })
       })
     })
