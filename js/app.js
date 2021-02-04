@@ -49,10 +49,6 @@ function createFilterBlocks(where, cars) {
   })
 
   where.insertAdjacentHTML('afterBegin', blocksHtml)
-
-  filterFormEl.addEventListener('input', () => {
-    CARS.length ? filterCountEl.innerHTML = CARS.length : filterCountEl.innerHTML = 0
-  })
 }
 
 
