@@ -95,10 +95,7 @@ function createFilterRange(field) {
 }
 
 
-filterFormEl.addEventListener('submit', event => {
-  event.preventDefault()
-  
-  const form = event.target
+function filterCars(form) {
   const filterOptions = {}
 
   filterFields.forEach(field => {
@@ -135,14 +132,21 @@ filterFormEl.addEventListener('submit', event => {
       })
     })
   })
+}
+
+
+filterFormEl.addEventListener('submit', function(event) {
+  event.preventDefault()
   
+  filterCars(this)
   renderCards(carListEl, CARS, false, true)
 })
 
 
-// filterFormEl.addEventListener('input', () => {
-//   CARS.length ? filterCountEl.innerHTML = CARS.length : filterCountEl.innerHTML = 0
-// })
+filterFormEl.addEventListener('input', function() {
+  filterCars(this)
+  CARS.length ? filterCountEl.innerHTML = CARS.length : filterCountEl.innerHTML = 0
+})
 
 
 carListEl.addEventListener('click', event => {
