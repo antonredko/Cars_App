@@ -41,24 +41,14 @@
           </div>
           <div class="col-2 filter-bar rounded position-relative">
             <form class="filter-form position-sticky start-0" id="filterForm" name="filterForm">
-
-              <!-- <fieldset class="row mb-3 rounded filter-block overflow-auto">
-                <legend class="col-form-label col-sm-2 pt-0 fw-bold">Цена</legend>
-                <label class="form-check-label d-flex align-items-center mb-2">
-                  <input class="col-5" type="text" name="price" placeholder="от">
-                  <span class="col-2 align-items-center justify-content-center">-</span>
-                  <input class="col-5" type="text" name="price" placeholder="до">
-                </label>
-              </fieldset> -->
-
-              <button type="submit" class="btn btn-primary w-100">Показать</button>
+              <button type="submit" class="btn btn-primary w-100">Показать <span class="filter-count" id="filterCount">0</span></button>
             </form>
           </div>
           <div class="col-9 offset-1">
             <div class="row row-cols-1 car-list" id="carList"></div>
             
             
-            <div class="notFound text-center lh-lg vh-75 fw-bold d-none" id="notFound">
+            <div class="not-found text-center lh-lg vh-75 fw-bold d-none" id="notFound">
               <h2 class="fs-2">Автомобиль не найден... <i class="fas fa-frown frown"></i></h2>
               <p class="fs-4">
                 <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>

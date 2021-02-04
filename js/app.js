@@ -7,6 +7,7 @@ const showAllBtnEl = document.getElementById('showAllBtn')
 const showBlockBtnsEl = document.getElementById('showBlockBtns')
 const searchFormEl = document.getElementById('searchForm')
 const filterFormEl = document.getElementById('filterForm')
+const filterCountEl = document.getElementById('filterCount')
 const notFoundEl = document.getElementById('notFound')
 const backToListBtnEl = document.getElementById('backToListBtn')
 const dateFormatter = new Intl.DateTimeFormat()
@@ -48,6 +49,10 @@ function createFilterBlocks(where, cars) {
   })
 
   where.insertAdjacentHTML('afterBegin', blocksHtml)
+
+  filterFormEl.addEventListener('input', () => {
+    CARS.length ? filterCountEl.innerHTML = CARS.length : filterCountEl.innerHTML = 0
+  })
 }
 
 
@@ -119,8 +124,8 @@ filterFormEl.addEventListener('submit', event => {
       filterOptions[field] = checkedValues
     }
   })
+
   const filterValues = Object.values(filterOptions)
-  
   
   CARS = DATA.filter(car => {
     return filterValues.every(values => {
@@ -134,9 +139,14 @@ filterFormEl.addEventListener('submit', event => {
       })
     })
   })
-
+  
   renderCards(carListEl, CARS, false, true)
 })
+
+
+// filterFormEl.addEventListener('input', () => {
+//   CARS.length ? filterCountEl.innerHTML = CARS.length : filterCountEl.innerHTML = 0
+// })
 
 
 carListEl.addEventListener('click', event => {
