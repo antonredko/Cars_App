@@ -102,8 +102,10 @@ filterFormEl.addEventListener('submit', event => {
 
   filterFields.forEach(field => {
     if (field == "price") {
-      const priceValues = [...form[field]].map(item => {
-        return item.value
+      const priceValues = [...form[field]].map((item, i) => {
+        return i == 0 ? item.value || 0 
+                : i == 1 ? item.value || Infinity
+                : item.value
       })
       filterOptions[field] = priceValues
     } else {
@@ -123,19 +125,11 @@ filterFormEl.addEventListener('submit', event => {
   CARS = DATA.filter(car => {
     return filterValues.every(values => {
       return !values.length ? true : values.some(value => {
-        // if (value == "0" || value == "") {
-        //   return 0
-        // }
         return filterFields.some(field => {
-          if (
-            field == "price" &&
-            car[field] >= Math.min(...values) &&
-            car[field] <= Math.max(...values)
-          ) {
-            return true;
+          if (field == "price") {
+            return car[field] >= Math.min(...values) && car[field] <= Math.max(...values)
           }
           return `${car[field]}`.includes(value)
-            
         })
       })
     })
