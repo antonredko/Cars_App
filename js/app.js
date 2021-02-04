@@ -233,6 +233,8 @@ masonryBtnsEl.addEventListener('click', event => {
     siblingEl.classList.remove('btn-success')
     siblingEl.classList.add('btn-secondary')
   }
+
+  btnEl.blur()
 })
 
 

@@ -11,33 +11,38 @@
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4 border-bottom border-3 border-dark">Список автомобилей</h1>
+        <h1 class="text-center fs-1 fw-bold p-4 px-0 border-bottom border-3 border-dark">Список автомобилей</h1>
         <div class="row">
-          <div class="top-bar my-3 d-flex justify-content-between col-12">
-            <label class="d-flex align-items-center col-4">
-              Сортировка:
-              <select name="sortingSelect" class="sorting-select form-select ms-2 h-100 text-primary" id="sortingSelect">
-                <option class="py-3" value="default" selected>По умолчанию</option>
-                <option class="py-3" value="price-inc">От дешевых к дорогим</option>
-                <option class="py-3" value="price-dec">От дорогих к дешевым</option>
-                <option class="py-3" value="timestamp-dec">Дата добавления</option>
-                <option class="py-3" value="year-inc">Год выпуска, по возростанию</option>
-                <option class="py-3" value="year-dec">Год выпуска, по убыванию</option>
-                <option class="py-3" value="odo-inc">Пробег, по возростанию</option>
-                <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
-              </select>
-            </label>
-            <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
-              <div class="form-floating w-100">
-                <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
-                <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
-                </div>
-              <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
-            </form>
-            <div class="masonry-btns col-1 d-flex justify-content-between align-items-center" id="masonryBtns">
-              <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
-              <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
+          <div class="top-bar px-0 py-3 col-12">
+            <div class="d-flex justify-content-between col-12">
+              <label class="d-flex align-items-center col-4">
+                Сортировка:
+                <select name="sortingSelect" class="sorting-select form-select ms-2 h-100 text-primary" id="sortingSelect">
+                  <option class="py-3" value="default" selected>По умолчанию</option>
+                  <option class="py-3" value="price-inc">От дешевых к дорогим</option>
+                  <option class="py-3" value="price-dec">От дорогих к дешевым</option>
+                  <option class="py-3" value="timestamp-dec">Дата добавления</option>
+                  <option class="py-3" value="year-inc">Год выпуска, по возростанию</option>
+                  <option class="py-3" value="year-dec">Год выпуска, по убыванию</option>
+                  <option class="py-3" value="odo-inc">Пробег, по возростанию</option>
+                  <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
+                </select>
+              </label>
+              <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
+                <div class="form-floating w-100">
+                  <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
+                  <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
+                  </div>
+                <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
+              </form>
+              <div class="masonry-btns col-1 d-flex justify-content-between align-items-center" id="masonryBtns">
+                <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
+                <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
+              </div>
             </div>
+            <!-- <div class="col-12 d-flex mt-3 filter-tags" id="filterTags">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam voluptatum vitae nostrum dolore eligendi ex ad? Rem voluptas illo sint.
+            </div> -->
           </div>
           <div class="col-2 filter-bar rounded position-relative">
             <form class="filter-form position-sticky start-0" id="filterForm" name="filterForm">
