@@ -146,7 +146,7 @@ filterFormEl.addEventListener('submit', function(event) {
 
 filterFormEl.addEventListener('input', function() {
   filterCars(this)
-  filterCountEl.innerHTML = CARS.length || 0
+  filterCountEl.innerHTML = CARS.length
 })
 
 
