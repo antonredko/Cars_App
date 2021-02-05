@@ -88,7 +88,7 @@ function createFilterCheckbox(value, field) {
 
 
 function createFilterRange(field) {
-  return `<label class="form-check-label d-flex align-items-center mb-2">
+  return `<label class="form-check-label col-12 d-flex align-items-center mb-2">
             <input class="col-5" type="text" name="${field}" placeholder="от">
             <span class="col-2 align-items-center justify-content-center">-</span>
             <input class="col-5" type="text" name="${field}" placeholder="до">
@@ -146,7 +146,7 @@ filterFormEl.addEventListener('submit', function(event) {
 
 filterFormEl.addEventListener('input', function() {
   filterCars(this)
-  CARS.length ? filterCountEl.innerHTML = CARS.length : filterCountEl.innerHTML = 0
+  filterCountEl.innerHTML = CARS.length || 0
 })
 
 
