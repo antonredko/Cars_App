@@ -11,7 +11,19 @@
   <body>
     <div id="app">
       <div class="container">
-        <h1 class="text-center fs-1 fw-bold p-4 px-0 border-bottom border-3 border-dark">Список автомобилей</h1>
+        <div class="row border-bottom border-3 border-dark py-3 px-0">
+          <h1 class="col-6 fs-3 fw-bold d-flex align-items-center px-0">Список автомобилей</h1>
+          <div class="col-6 text-end px-0">
+            <button class="btn_with_count text-secondary bg-transparent border-0 fs-3 rounded-3 position-relative p-0">
+              <i class="fas fa-star"></i>
+              <span class="position-absolute top-0 start-100 badge rounded-pill bg-secondary py-1 px-2 fs-6" id="favoritsCount"></span>
+            </button>
+            <button class="btn_with_count text-secondary bg-transparent border-0 fs-3 rounded-3 position-relative ms-3 p-0">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="position-absolute top-0 start-100 badge rounded-pill bg-secondary py-1 px-2 fs-6" id="shoppingCartCount"></span>
+            </button>
+          </div>
+        </div>
         <div class="row">
           <div class="top-bar px-0 py-3 col-12">
             <div class="d-flex justify-content-between col-12">
@@ -39,9 +51,6 @@
                 <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
                 <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
               </div>
-            </div>
-            <div class="col-12 d-flex mt-3 filter-tags" id="filterTags">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam voluptatum vitae nostrum dolore eligendi ex ad? Rem voluptas illo sint.
             </div>
           </div>
           <div class="col-2 filter-bar rounded position-relative">
@@ -72,7 +81,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script defer src="https://kit.fontawesome.com/a19e82d2c7.js" crossorigin="anonymous"></script>
-    <script src="js/data.js"></script>
     <script defer src="js/app.js"></script>
   </body>
 </html>

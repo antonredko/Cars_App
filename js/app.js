@@ -1,5 +1,8 @@
-let CARS = [...DATA]
+let DATA = []
+let CARS = []
 const carListEl = document.getElementById('carList')
+const favoritsCountEl = document.getElementById('favoritsCount')
+const shoppingCartCountEl = document.getElementById('shoppingCartCount')
 const masonryBtnsEl = document.getElementById('masonryBtns')
 const sortingSelectEl = document.getElementById('sortingSelect')
 const showMoreBtnEl = document.getElementById('showMoreBtn')
@@ -8,7 +11,6 @@ const showBlockBtnsEl = document.getElementById('showBlockBtns')
 const searchFormEl = document.getElementById('searchForm')
 const filterFormEl = document.getElementById('filterForm')
 const filterCountEl = document.getElementById('filterCount')
-const filterTagsEl = document.getElementById('filterTags')
 const notFoundEl = document.getElementById('notFound')
 const backToListBtnEl = document.getElementById('backToListBtn')
 const dateFormatter = new Intl.DateTimeFormat()
@@ -29,7 +31,8 @@ const uahFormatter = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0
 })
-const exchangeCourseUSD = 28.35194
+let exchangeCourseUSD = 0
+
 
 if (!localStorage.wishList) {
   localStorage.wishList = JSON.stringify([])
@@ -37,9 +40,6 @@ if (!localStorage.wishList) {
 const wishListLS = JSON.parse(localStorage.wishList)
 const searchFields = ['make', 'model', 'year']
 const filterFields = ['make', 'fuel', 'transmission', "price"]
-
-
-createFilterBlocks(filterFormEl, CARS)
 
 
 function createFilterBlocks(where, cars) {
@@ -88,15 +88,21 @@ function createFilterCheckbox(value, field) {
 
 
 function createFilterRange(field) {
+  const prices = CARS.map(car => car.price)
+  const minPrice = Math.min(...prices)
+  const maxPrice = Math.max(...prices)
+
   return `<label class="form-check-label col-12 d-flex align-items-center mb-2">
-            <input class="col-5" type="text" name="${field}" placeholder="от">
+            <input class="col-5" type="number" min="${minPrice}" max="${maxPrice - 1}" step="1" value="${minPrice}" name="${field}" placeholder="от" id="minPrice">
             <span class="col-2 align-items-center justify-content-center">-</span>
-            <input class="col-5" type="text" name="${field}" placeholder="до">
+            <input class="col-5" type="number" min="${minPrice + 1}" max="${maxPrice}" step="1" value="${maxPrice}" name="${field}" placeholder="до" id="maxPrice">
           </label>`
 }
 
 
 function filterCars(form) {
+  const minPriceEl = document.getElementById('minPrice')
+  const maxPriceEl = document.getElementById('maxPrice')
   const filterOptions = {}
 
   filterFields.forEach(field => {
@@ -126,9 +132,9 @@ function filterCars(form) {
       return !values.length ? true : values.some(value => {
         return filterFields.some(field => {
           if (field == "price") {
-            return car[field] >= Math.min(...values) && car[field] <= Math.max(...values)
+            return car[field] >= minPriceEl.value && car[field] <= maxPriceEl.value
           }
-          return `${car[field]}`.includes(value)
+          return (`${car[field]}`.includes(value))
         })
       })
     })
@@ -268,9 +274,6 @@ showAllBtnEl.addEventListener('click', () => {
 })
 
 
-renderCards(carListEl, CARS, true)
-
-
 function renderCards(where, array, add, all) {
   let countOfCards = all ? array.length : 10
   let children = 0
@@ -333,7 +336,7 @@ function Card(data) {
               </div>
               <div class="col-7">
                 <h2 class="card-title fs-3 fw-bold mb-3 col-9">${data.make} ${data.model} ${data.engine_volume ? data.engine_volume : ''} ${data.transmission ? data.transmission : ''} (${data.year})</h2>
-                <h3 class="card-price fs-3 d-flex align-items-center fw-bold mb-4">${usdFormatter.format(data.price)} <span class="text-muted fs-5 fw-normal ms-4">${uahFormatter.format(priceUAH)}</span></h3>
+                <h3 class="card-price fs-3 d-flex align-items-center fw-bold mb-4">${usdFormatter.format(data.price)} <span class="text-muted fs-5 fw-normal ms-4">${priceUAH ? uahFormatter.format(priceUAH) : '---'}</span></h3>
                 <ul class="card-base-info row mb-4">
                   <li class="col-6 mb-3">
                     <i class="fas fa-tachometer-alt me-1 text-center"></i> ${numberFormatter.format(data.odo)} км
@@ -364,8 +367,9 @@ function Card(data) {
                 </div>
                 ${data.vin ? `<div class="card-vin mb-4 d-flex"><p class="border border-primary border-2 rounded"><span class="card-vin-label p-2">VIN</span><span class="p-2">${data.vin}</span></p></div>` : ""}
                 ${data.color ? `<div class="card-paint d-flex align-items-center mb-4">Цвет: <span class="ms-2">${data.color}</span></div>` : ""}
-                <div class="d-flex align-items-center">
-                  <a href="tel:${data.phone}" class="btn btn-primary fw-bold call-btn">
+                <div class="d-flex align-items-center ">
+                  <button class="btn btn-info text-light border-0 rounded-3 fw-bold"><i class="fas fa-cart-plus me-2"></i>В корзину</button>
+                  <a href="tel:${data.phone}" class="btn btn-primary fw-bold ms-3 border-0 call-btn">
                     <i class="fas fa-phone-alt me-2"></i> Позвонить
                   </a>
                   <p class="ms-3 text-muted">${data.seller}</p>
@@ -379,7 +383,7 @@ function Card(data) {
               </small>
               <small class="ms-3">
                 <i class="fas fa-eye me-1"></i>
-                <span>${data.views}</span>
+                <span>${data.reviews}</span>
               </small>
             </div>
           </div>`
@@ -391,4 +395,38 @@ function Card(data) {
 function findSiblings(elem) {
   const children = Array.from(elem.parentElement.children)
   return children.filter(child => child != elem)
+}
+
+
+getData()
+
+
+async function getData() {
+  try {
+    const response = await fetch('/data/cars.json')
+    const data = await response.json()
+    DATA = [...data]
+    CARS = [...data]
+
+    getRate()
+  } catch(error) {
+    console.warn(error)
+  }
+}
+
+
+async function getRate() {
+  try {
+    const response = await fetch('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
+    const data = await response.json()
+    
+    exchangeCourseUSD = data.find(item => item.ccy == 'USD').sale
+  } catch(error) {
+    console.warn(error)
+  }
+
+  renderCards(carListEl, CARS, true)
+  createFilterBlocks(filterFormEl, CARS)
+  filterCars(filterFormEl)
+  filterCountEl.innerHTML = CARS.length
 }
