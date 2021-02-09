@@ -57,7 +57,7 @@ function createFilterBlock(cars, field) {
   let inputsHtml = ''
 
   if (field == "price") {
-    inputsHtml += createFilterRange(field)
+    inputsHtml += createFilterRange(cars, field)
   } else {
     const uValues = [...new Set(cars.map(car => car[field]))].sort()
 
@@ -87,8 +87,8 @@ function createFilterCheckbox(value, field) {
 }
 
 
-function createFilterRange(field) {
-  const prices = CARS.map(car => car.price)
+function createFilterRange(cars, field) {
+  const prices = cars.map(car => car.price)
   const minPrice = Math.min(...prices)
   const maxPrice = Math.max(...prices)
 
@@ -101,8 +101,6 @@ function createFilterRange(field) {
 
 
 function filterCars(form) {
-  const minPriceEl = document.getElementById('minPrice')
-  const maxPriceEl = document.getElementById('maxPrice')
   const filterOptions = {}
 
   filterFields.forEach(field => {
@@ -132,7 +130,7 @@ function filterCars(form) {
       return !values.length ? true : values.some(value => {
         return filterFields.some(field => {
           if (field == "price") {
-            return car[field] >= minPriceEl.value && car[field] <= maxPriceEl.value
+            return car[field] >= Math.min(...values) && car[field] <= Math.max(...values)
           }
           return (`${car[field]}`.includes(value))
         })
@@ -398,17 +396,16 @@ function findSiblings(elem) {
 }
 
 
-getData()
+createLayout()
 
 
 async function getData() {
   try {
-    const response = await fetch('/Cars_List/data/cars.json')
+    const response = await fetch('/data/cars.json')
     const data = await response.json()
     DATA = [...data]
     CARS = [...data]
 
-    getRate()
   } catch(error) {
     console.warn(error)
   }
@@ -424,6 +421,12 @@ async function getRate() {
   } catch(error) {
     console.warn(error)
   }
+}
+
+
+async function createLayout() {
+  await getData()
+  await getRate()
 
   renderCards(carListEl, CARS, true)
   createFilterBlocks(filterFormEl, CARS)
