@@ -62,7 +62,7 @@ html{
 	padding: .175rem .55rem;
 }
 .badge{
-	transform: translate(-80%, -33%)
+	transform: translate(-55%, -58%);
 }
 .favorites{
 	top: 16px;
@@ -162,4 +162,13 @@ html{
 }
 .filter-count::after{
 	content: '\0029';
+}
+.modal input[type="number"] {
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
+.modal input[type="number"]::-webkit-outer-spin-button,
+.modal input[type="number"]::-webkit-inner-spin-button {
+	display: none;
 }

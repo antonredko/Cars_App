@@ -1,6 +1,8 @@
 let DATA = []
 let CARS = []
 const carListEl = document.getElementById('carList')
+const favoritsBtnEl = document.getElementById('favoritsBtn')
+const shoppingCartBtnEl = document.getElementById('shoppingCartBtn')
 const favoritsCountEl = document.getElementById('favoritsCount')
 const shoppingCartCountEl = document.getElementById('shoppingCartCount')
 const masonryBtnsEl = document.getElementById('masonryBtns')
@@ -32,14 +34,200 @@ const uahFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0
 })
 let exchangeCourseUSD = 0
+let wishListLS = []
+let shoppingCartLS = []
+const searchFields = ['make', 'model', 'year']
+const filterFields = ['make', 'fuel', 'transmission', "price"]
+const shoppingCartBodyEl = document.getElementById('shoppingCartBody')
 
 
 if (!localStorage.wishList) {
   localStorage.wishList = JSON.stringify([])
+} else {
+  wishListLS = JSON.parse(localStorage.wishList)
+  activateBtn(favoritsCountEl, favoritsBtnEl, wishListLS)
 }
-const wishListLS = JSON.parse(localStorage.wishList)
-const searchFields = ['make', 'model', 'year']
-const filterFields = ['make', 'fuel', 'transmission', "price"]
+
+
+if (!localStorage.shoppingCart) {
+  localStorage.shoppingCart = JSON.stringify([])
+} else {
+  shoppingCartLS = JSON.parse(localStorage.shoppingCart)
+  activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+}
+
+
+createLayout()
+
+
+filterFormEl.addEventListener('submit', function(event) {
+  event.preventDefault()
+  
+  filterCars(this)
+  renderCards(carListEl, CARS, false, true)
+})
+
+
+filterFormEl.addEventListener('input', function() {
+  filterCars(this)
+  filterCountEl.innerHTML = CARS.length
+})
+
+
+carListEl.addEventListener('click', event => {
+  const favBtnEl = event.target.closest('.to-favorites')
+  const shopCartBtnEl = event.target.closest('.to-shopping-cart')
+  const cardEl = event.target.closest('.card')
+  const carId = cardEl.dataset.carid
+
+  if (favBtnEl && cardEl) {
+    const carIndex = wishListLS.findIndex(id => id == carId)
+      
+    if (~carIndex) {
+      wishListLS.splice(carIndex, 1)
+    } else {
+      wishListLS.push(carId)
+    }
+    localStorage.wishList = JSON.stringify(wishListLS)
+    
+    activateBtn(favoritsCountEl, favoritsBtnEl, wishListLS)
+
+    favBtnEl.classList.toggle('btn-secondary')
+    favBtnEl.classList.toggle('btn-warning')
+
+    favBtnEl.blur()
+  }
+
+  if (shopCartBtnEl && cardEl) {
+    shoppingCartLS.push(CARS.find(car => car.id == carId))
+
+    localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
+
+    activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+
+    shopCartBtnEl.blur()
+  }
+})
+
+
+searchFormEl.addEventListener('submit', function(event) {
+  event.preventDefault()
+
+  notFoundEl.classList.add("d-none");
+
+  let query = this.search.value.toLowerCase().trim().split(' ')
+
+  CARS = DATA.filter(car => {
+    return query.every(word => {
+      return searchFields.some(field => {
+        return `${car[field]}`.toLowerCase().trim().includes(word)
+      })
+    })
+  })
+
+  if (CARS.length) {
+    renderCards(carListEl, CARS, false, true)
+  } else {
+    carListEl.innerHTML = ''
+
+    notFoundEl.classList.remove('d-none')
+    showBlockBtnsEl.classList.add('d-none')
+  }
+  
+  this.search.blur()
+  this.reset()
+})
+
+
+backToListBtnEl.addEventListener('click', () => {
+  renderCards(carListEl, DATA, true)
+
+  notFoundEl.classList.add('d-none')
+
+  showBlockBtnsEl.classList.remove('d-none')
+})
+
+
+masonryBtnsEl.addEventListener('click', event => {
+  const btnEl = event.target.closest('.btn')
+
+  if (btnEl) {
+    const type = btnEl.dataset.masonry
+
+    if (type == '1') {
+      carListEl.classList.remove('row-cols-2')
+      carListEl.classList.add('row-cols-1')
+
+    } else if (type == '2') {
+      carListEl.classList.remove('row-cols-1')
+      carListEl.classList.add('row-cols-2')
+    }
+
+    btnEl.classList.remove('btn-secondary')
+    btnEl.classList.add('btn-success')
+
+    const [siblingEl] = findSiblings(btnEl)
+
+    siblingEl.classList.remove('btn-success')
+    siblingEl.classList.add('btn-secondary')
+  }
+
+  btnEl.blur()
+})
+
+
+sortingSelectEl.addEventListener('change', function () {
+  let [key, type] = this.value.split('-')
+
+  CARS.sort((a, b) => {
+    if (type == 'inc') {
+      return a[key] - b[key]
+    } else if (type == 'dec') {
+      return b[key] - a[key]
+    }
+  })
+
+  if (key && type) {
+    renderCards(carListEl, CARS)
+  } else {
+    renderCards(carListEl, DATA)
+  }
+})
+
+
+showMoreBtnEl.addEventListener('click', () => {
+  renderCards(carListEl, CARS, true)
+})
+
+
+showAllBtnEl.addEventListener('click', () => {
+  renderCards(carListEl, CARS, true, true)
+})
+
+
+function shoppingCartElement(data) {
+  let priceUAH = data.price * exchangeCourseUSD
+  
+  return `<tr>
+            <th scope="row">1</th>
+            <td>${data.make} ${data.model} ${data.engine_volume ? data.engine_volume : ''} ${data.transmission ? data.transmission : ''} (${data.year})</td>
+            <td>
+              <span>${usdFormatter.format(data.price)}</span>
+              <small class="text-muted">/${priceUAH ? uahFormatter.format(priceUAH) : '---'}</small>
+            </td>
+            <td>
+              <div class="input-group justify-content-center">
+                <button class="btn btn-primary">-</button>
+                <input class="text-center border-0 w-25" type="number" name="count" min="0" step="1" value="">
+                <button class="btn btn-primary">+</button>
+              </div>
+            </td>
+            <td></td>
+            <td>
+              <button type="button" class="btn-close align-middle" aria-label="Close"></button>
+            </td>
+          </tr>`
+}
 
 
 function createFilterBlocks(where, cars) {
@@ -140,138 +328,6 @@ function filterCars(form) {
 }
 
 
-filterFormEl.addEventListener('submit', function(event) {
-  event.preventDefault()
-  
-  filterCars(this)
-  renderCards(carListEl, CARS, false, true)
-})
-
-
-filterFormEl.addEventListener('input', function() {
-  filterCars(this)
-  filterCountEl.innerHTML = CARS.length
-})
-
-
-carListEl.addEventListener('click', event => {
-  const btnEl = event.target.closest('.to-favorites')
-  const cardEl = event.target.closest('.card')
-
-  if (btnEl && cardEl) {
-    const carId = cardEl.dataset.carid
-    const wishedCarIndex = wishListLS.findIndex(id => id == carId)
-      
-    if (~wishedCarIndex) {
-      wishListLS.splice(wishedCarIndex, 1)
-    } else {
-      wishListLS.push(carId)
-    }
-    localStorage.wishList = JSON.stringify(wishListLS)
-
-    btnEl.classList.toggle('btn-secondary')
-    btnEl.classList.toggle('btn-warning')
-
-    btnEl.blur()
-  }
-})
-
-
-searchFormEl.addEventListener('submit', function(event) {
-  event.preventDefault()
-
-  notFoundEl.classList.add("d-none");
-
-  let query = this.search.value.toLowerCase().trim().split(' ')
-
-  CARS = DATA.filter(car => {
-    return query.every(word => {
-      return searchFields.some(field => {
-        return `${car[field]}`.toLowerCase().trim().includes(word)
-      })
-    })
-  })
-
-  if (CARS.length) {
-    renderCards(carListEl, CARS, false, true)
-  } else {
-    carListEl.innerHTML = ''
-
-    notFoundEl.classList.remove('d-none')
-    showBlockBtnsEl.classList.add('d-none')
-  }
-  
-  this.search.blur()
-  this.reset()
-})
-
-
-backToListBtnEl.addEventListener('click', () => {
-  renderCards(carListEl, DATA, true)
-
-  notFoundEl.classList.add('d-none')
-
-  showBlockBtnsEl.classList.remove('d-none')
-})
-
-
-masonryBtnsEl.addEventListener('click', event => {
-  const btnEl = event.target.closest('.btn')
-
-  if (btnEl) {
-    const type = btnEl.dataset.masonry
-
-    if (type == '1') {
-      carListEl.classList.remove('row-cols-2')
-      carListEl.classList.add('row-cols-1')
-
-    } else if (type == '2') {
-      carListEl.classList.remove('row-cols-1')
-      carListEl.classList.add('row-cols-2')
-    }
-
-    btnEl.classList.remove('btn-secondary')
-    btnEl.classList.add('btn-success')
-
-    const [siblingEl] = findSiblings(btnEl)
-
-    siblingEl.classList.remove('btn-success')
-    siblingEl.classList.add('btn-secondary')
-  }
-
-  btnEl.blur()
-})
-
-
-sortingSelectEl.addEventListener('change', function () {
-  let [key, type] = this.value.split('-')
-
-  CARS.sort((a, b) => {
-    if (type == 'inc') {
-      return a[key] - b[key]
-    } else if (type == 'dec') {
-      return b[key] - a[key]
-    }
-  })
-
-  if (key && type) {
-    renderCards(carListEl, CARS)
-  } else {
-    renderCards(carListEl, DATA)
-  }
-})
-
-
-showMoreBtnEl.addEventListener('click', () => {
-  renderCards(carListEl, CARS, true)
-})
-
-
-showAllBtnEl.addEventListener('click', () => {
-  renderCards(carListEl, CARS, true, true)
-})
-
-
 function renderCards(where, array, add, all) {
   let countOfCards = all ? array.length : 10
   let children = 0
@@ -366,7 +422,7 @@ function Card(data) {
                 ${data.vin ? `<div class="card-vin mb-4 d-flex"><p class="border border-primary border-2 rounded"><span class="card-vin-label p-2">VIN</span><span class="p-2">${data.vin}</span></p></div>` : ""}
                 ${data.color ? `<div class="card-paint d-flex align-items-center mb-4">Цвет: <span class="ms-2">${data.color}</span></div>` : ""}
                 <div class="d-flex align-items-center ">
-                  <button class="btn btn-info text-light border-0 rounded-3 fw-bold"><i class="fas fa-cart-plus me-2"></i>В корзину</button>
+                  <button class="btn btn-info text-light border-0 rounded-3 fw-bold to-shopping-cart"><i class="fas fa-cart-plus me-2"></i>В корзину</button>
                   <a href="tel:${data.phone}" class="btn btn-primary fw-bold ms-3 border-0 call-btn">
                     <i class="fas fa-phone-alt me-2"></i> Позвонить
                   </a>
@@ -390,18 +446,28 @@ function Card(data) {
 
 // Utils
 
+function activateBtn(count, button, array) {
+  count.innerHTML = array.length || ''
+
+  if (count.innerHTML) {
+    button.classList.remove('text-secondary')
+    button.classList.add('text-warning')
+  } else {
+    button.classList.remove('text-warning')
+    button.classList.add('text-secondary')
+  }
+}
+
+
 function findSiblings(elem) {
   const children = Array.from(elem.parentElement.children)
   return children.filter(child => child != elem)
 }
 
 
-createLayout()
-
-
 async function getData() {
   try {
-    const response = await fetch('/Cars_List/data/cars.json')
+    const response = await fetch('/data/cars.json')
     const data = await response.json()
     DATA = [...data]
     CARS = [...data]
