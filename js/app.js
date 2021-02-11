@@ -205,24 +205,70 @@ showAllBtnEl.addEventListener('click', () => {
 })
 
 
-function shoppingCartElement(data) {
-  let priceUAH = data.price * exchangeCourseUSD
-  
-  return `<tr>
-            <th scope="row">1</th>
+shoppingCartBodyEl.addEventListener('click', event => {
+  const closeBtnEl = event.target.closest('.btn-close')
+  const cartItemEl = event.target.closest('.shop-cart-item')
+
+  if (closeBtnEl && cartItemEl) {
+    const cartItemId = cartItemEl.dataset.id
+
+    shoppingCartLS.forEach((item, i) => {
+      if (item.id == cartItemId) {
+        shoppingCartLS.splice(i, 1)
+      }
+    })
+    localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
+
+    renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+
+    activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+  }
+})
+
+
+shoppingCartBtnEl.addEventListener('click', () => {
+  renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+})
+
+
+function renderShoppingCartElement(where, array) {
+  where.innerHTML = ''
+
+  let html = ''
+  const uniq = [...new Set(array.map(JSON.stringify))].map(JSON.parse)
+
+  uniq.forEach((element, i) => {
+    html += shoppingCartElement(array, element, i + 1)
+  });
+
+  where.insertAdjacentHTML('beforeEnd', html)
+}
+
+
+function shoppingCartElement(array, data, num) {
+  const priceUAH = data.price * exchangeCourseUSD
+  const reapitingElem = array.filter(item => item.id == data.id)
+  const priceTotalUSD = data.price * reapitingElem.length
+  const priceTotalUAH = priceTotalUSD * exchangeCourseUSD
+
+  return `<tr class="shop-cart-item" data-id="${data.id}">
+            <th scope="row">${num}</th>
             <td>${data.make} ${data.model} ${data.engine_volume ? data.engine_volume : ''} ${data.transmission ? data.transmission : ''} (${data.year})</td>
             <td>
               <span>${usdFormatter.format(data.price)}</span>
-              <small class="text-muted">/${priceUAH ? uahFormatter.format(priceUAH) : '---'}</small>
+              <small class="text-muted">/ ${priceUAH ? uahFormatter.format(priceUAH) : '---'}</small>
             </td>
             <td>
               <div class="input-group justify-content-center">
                 <button class="btn btn-primary">-</button>
-                <input class="text-center border-0 w-25" type="number" name="count" min="0" step="1" value="">
+                <input class="text-center border-1 border-primary w-25" type="number" name="count" min="0" step="1" value="${reapitingElem.length}">
                 <button class="btn btn-primary">+</button>
               </div>
             </td>
-            <td></td>
+            <td>
+              <span>${usdFormatter.format(priceTotalUSD)}</span>
+              <small class="text-muted">/ ${priceTotalUAH ? uahFormatter.format(priceTotalUAH) : '---'}</small>
+            </td>
             <td>
               <button type="button" class="btn-close align-middle" aria-label="Close"></button>
             </td>
@@ -467,7 +513,7 @@ function findSiblings(elem) {
 
 async function getData() {
   try {
-    const response = await fetch('/data/cars.json')
+    const response = await fetch('Cars_List/data/cars.json')
     const data = await response.json()
     DATA = [...data]
     CARS = [...data]
