@@ -1,111 +1,124 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
+<head>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Список автомобилей</title>
     <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
+</head>
+<body>
     <div id="app">
-      <div class="container">
-        <div class="row border-bottom border-3 border-dark py-3 px-0">
-          <h1 class="col-6 fs-3 fw-bold d-flex align-items-center px-0">Список автомобилей</h1>
-          <div class="col-6 text-end px-0">
-            <button class="btn_with_count text-secondary bg-transparent border-0 fs-3 rounded-3 position-relative p-0 me-3" id="favoritsBtn">
-              <i class="fas fa-star"></i>
-              <span class="position-absolute top-0 start-100 badge rounded-pill bg-secondary py-1 px-2 fs-6 bg-danger" id="favoritsCount"></span>
-            </button>
-            <button class="btn_with_count text-secondary bg-transparent border-0 fs-3 rounded-3 position-relative ms-3 p-0" id="shoppingCartBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              <i class="fas fa-shopping-cart"></i>
-              <span class="position-absolute top-0 start-100 badge rounded-pill bg-secondary py-1 px-2 fs-6 bg-danger" id="shoppingCartCount"></span>
-            </button>
-          </div>
+        <div class="container">
+            <div class="row border-bottom border-3 border-dark py-3 px-0">
+                <h1 class="col-6 fs-3 fw-bold d-flex align-items-center px-0">Список автомобилей</h1>
+                <div class="col-6 text-end px-0">
+                    <button class="btn_with_count text-secondary bg-transparent border-0 fs-3 rounded-3 position-relative p-1" id="favoritsBtn">
+                        <i class="fas fa-star"></i>
+                        <span class="position-absolute top-0 start-100 badge rounded-pill bg-secondary py-1 px-2 fs-6 bg-danger" id="favoritsCount"></span>
+                    </button>
+                    <button class="btn_with_count text-secondary bg-transparent border-0 fs-3 rounded-3 position-relative ms-3 p-1" id="shoppingCartBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 badge rounded-pill bg-secondary py-1 px-2 fs-6 bg-danger" id="shoppingCartCount"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="top-bar px-0 py-3 col-12">
+                    <div class="d-flex justify-content-between col-12">
+                        <label class="d-flex align-items-center col-4">
+                            Сортировка:
+                            <select name="sortingSelect" class="sorting-select form-select ms-2 h-100" id="sortingSelect">
+                                <option class="py-3" value="default" selected>По умолчанию</option>
+                                <option class="py-3" value="price-inc">От дешевых к дорогим</option>
+                                <option class="py-3" value="price-dec">От дорогих к дешевым</option>
+                                <option class="py-3" value="timestamp-dec">Дата добавления</option>
+                                <option class="py-3" value="year-inc">Год выпуска, по возростанию</option>
+                                <option class="py-3" value="year-dec">Год выпуска, по убыванию</option>
+                                <option class="py-3" value="odo-inc">Пробег, по возростанию</option>
+                                <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
+                            </select>
+                        </label>
+                        <form name="searchForm" id="searchForm"
+                            class="lh-base col-7 d-flex justify-content-center px-5">
+                            <div class="form-floating w-100">
+                                <input type="search" name="search" class="form-control rounded-0 rounded-start"
+                                    id="queryField" minlength="2" placeholder="Введите запрос" required>
+                                <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
+                        </form>
+                        <div class="masonry-btns col-1 d-flex justify-content-between align-items-center"
+                            id="masonryBtns">
+                            <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
+                            <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 filter-bar rounded position-relative">
+                    <form class="filter-form position-sticky start-0" id="filterForm" name="filterForm">
+                        <button type="submit" class="btn btn-primary w-100">Показать <span class="filter-count" id="filterCount">0</span></button>
+                    </form>
+                </div>
+                <div class="col-9 offset-1">
+                    <div class="row row-cols-1 car-list" id="carList"></div>
+                    <div class="not-found text-center lh-lg vh-75 fw-bold d-none" id="notFound">
+                        <h2 class="fs-2">Автомобиль не найден... <i class="fas fa-frown frown"></i></h2>
+                        <p class="fs-4">
+                            <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>
+                            <span class="col-12 justify-content-center">или</span>
+                            <button class="btn btn-outline-primary fs-4 back-to-list" id="backToListBtn"><i class="fas fa-arrow-left"></i> вернитесь к списку</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="py-3 d-flex flex-column justify-content-center align-items-center" id="showBlockBtns">
+                    <button class="btn btn-primary fs-5" id="showMoreBtn">Показать еще</button>
+                    <button class="btn btn-success mt-3 text" id="showAllBtn">Показать все</button>
+                </div>
+            </div>
         </div>
-        <div class="row">
-          <div class="top-bar px-0 py-3 col-12">
-            <div class="d-flex justify-content-between col-12">
-              <label class="d-flex align-items-center col-4">
-                Сортировка:
-                <select name="sortingSelect" class="sorting-select form-select ms-2 h-100" id="sortingSelect">
-                  <option class="py-3" value="default" selected>По умолчанию</option>
-                  <option class="py-3" value="price-inc">От дешевых к дорогим</option>
-                  <option class="py-3" value="price-dec">От дорогих к дешевым</option>
-                  <option class="py-3" value="timestamp-dec">Дата добавления</option>
-                  <option class="py-3" value="year-inc">Год выпуска, по возростанию</option>
-                  <option class="py-3" value="year-dec">Год выпуска, по убыванию</option>
-                  <option class="py-3" value="odo-inc">Пробег, по возростанию</option>
-                  <option class="py-3" value="odo-dec">Пробег, по убыванию</option>
-                </select>
-              </label>
-              <form name="searchForm" id="searchForm" class="lh-base col-7 d-flex justify-content-center px-5">
-                <div class="form-floating w-100">
-                  <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите запрос" required>
-                  <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
-                  </div>
-                <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
-              </form>
-              <div class="masonry-btns col-1 d-flex justify-content-between align-items-center" id="masonryBtns">
-                <button class="btn btn-success" data-masonry="1"><i class="fas fa-bars"></i></button>
-                <button class="btn btn-secondary" data-masonry="2"><i class="fas fa-th-large"></i></button>
-              </div>
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-fullscreen-xl-down modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-4" id="staticBackdropLabel">Корзина</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center justify-content-center">
+                        <table class="table table-striped text-center align-self-start" id="shoppingCartTable">
+                            <thead class="border-1 border-bottom border-dark fw-bold">
+                                <th scope="col">№</th>
+                                <th scope="col">Название</th>
+                                <th scope="col">Цена</th>
+                                <th scope="col">Количество</th>
+                                <th scope="col">Итого</th>
+                            </thead>
+                            <tbody id="shoppingCartBody"></tbody>
+                        </table>
+                        <div class="shopping-cart-empty w-100 d-flex justify-content-center align-items-center d-none" id="shoppingCartEmpty">
+                            <h2 class="fs-1 fw-bold">Пусто...</h2>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between fs-5" id="shoppingCartFooter">
+                        <p>К оплате:
+                            <span id="toPayUsd"></span>
+                            <span class="text-muted fs-6">/</span>
+                            <span class="text-muted fs-6" id="toPayUah"></span>
+                        </p>
+                        <button type="button" class="btn btn-primary">Оформить покупку</button>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-2 filter-bar rounded position-relative">
-            <form class="filter-form position-sticky start-0" id="filterForm" name="filterForm">
-              <button type="submit" class="btn btn-primary w-100">Показать <span class="filter-count" id="filterCount">0</span></button>
-            </form>
-          </div>
-          <div class="col-9 offset-1">
-            <div class="row row-cols-1 car-list" id="carList"></div>
-            
-            
-            <div class="not-found text-center lh-lg vh-75 fw-bold d-none" id="notFound">
-              <h2 class="fs-2">Автомобиль не найден... <i class="fas fa-frown frown"></i></h2>
-              <p class="fs-4">
-                <span class="col-12 justify-content-center">Попробуйте ввести другое название</span>
-                <span class="col-12 justify-content-center">или</span>
-                <button class="btn btn-outline-primary fs-4 back-to-list" id="backToListBtn"><i class="fas fa-arrow-left"></i> вернитесь к списку</button>
-              </p>
-            </div>
-          </div>
-          <div class="py-3 d-flex flex-column justify-content-center align-items-center" id="showBlockBtns">
-            <button class="btn btn-primary fs-5" id="showMoreBtn">Показать еще</button>
-            <button class="btn btn-success mt-3 text" id="showAllBtn">Показать все</button>
-          </div>
         </div>
-      </div>
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title fs-4" id="staticBackdropLabel">Корзина</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <table class="table table-striped text-center">
-                <thead class="border-1 border-bottom border-dark fw-bold">
-                  <th scope="col">№</th>
-                  <th scope="col">Название</th>
-                  <th scope="col">Цена</th>
-                  <th scope="col">Количество</th>
-                  <th scope="col">Итого</th>
-                </thead>
-                <tbody id="shoppingCartBody"></tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Оформить покупку</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
     <script defer src="https://kit.fontawesome.com/a19e82d2c7.js" crossorigin="anonymous"></script>
     <script defer src="js/app.js"></script>
-  </body>
+</body>
+
 </html>

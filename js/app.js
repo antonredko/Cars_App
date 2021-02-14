@@ -2,8 +2,8 @@ let DATA = []
 let CARS = []
 const carListEl = document.getElementById('carList')
 const favoritsBtnEl = document.getElementById('favoritsBtn')
-const shoppingCartBtnEl = document.getElementById('shoppingCartBtn')
 const favoritsCountEl = document.getElementById('favoritsCount')
+const shoppingCartBtnEl = document.getElementById('shoppingCartBtn')
 const shoppingCartCountEl = document.getElementById('shoppingCartCount')
 const masonryBtnsEl = document.getElementById('masonryBtns')
 const sortingSelectEl = document.getElementById('sortingSelect')
@@ -15,6 +15,11 @@ const filterFormEl = document.getElementById('filterForm')
 const filterCountEl = document.getElementById('filterCount')
 const notFoundEl = document.getElementById('notFound')
 const backToListBtnEl = document.getElementById('backToListBtn')
+const shoppingCartTableEl = document.getElementById('shoppingCartTable')
+const shoppingCartEmptyEl = document.getElementById('shoppingCartEmpty')
+const shoppingCartFooterEl = document.getElementById('shoppingCartFooter')
+const toPayUsdEl = document.getElementById('toPayUsd')
+const toPayUahEl = document.getElementById('toPayUah')
 const dateFormatter = new Intl.DateTimeFormat()
 const numberFormatter = new Intl.NumberFormat()
 const timeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -177,102 +182,126 @@ masonryBtnsEl.addEventListener('click', event => {
 
 
 sortingSelectEl.addEventListener('change', function () {
-  let [key, type] = this.value.split('-')
+    let [key, type] = this.value.split('-')
 
-  CARS.sort((a, b) => {
-    if (type == 'inc') {
-      return a[key] - b[key]
-    } else if (type == 'dec') {
-      return b[key] - a[key]
+    CARS.sort((a, b) => {
+        if (type == 'inc') {
+            return a[key] - b[key]
+        } else if (type == 'dec') {
+            return b[key] - a[key]
+        }
+    })
+
+    if (key && type) {
+        renderCards(carListEl, CARS)
+    } else {
+        renderCards(carListEl, DATA)
     }
-  })
-
-  if (key && type) {
-    renderCards(carListEl, CARS)
-  } else {
-    renderCards(carListEl, DATA)
-  }
 })
 
 
 showMoreBtnEl.addEventListener('click', () => {
-  renderCards(carListEl, CARS, true)
+    renderCards(carListEl, CARS, true)
 })
 
 
 showAllBtnEl.addEventListener('click', () => {
-  renderCards(carListEl, CARS, true, true)
+    renderCards(carListEl, CARS, true, true)
 })
 
 
+// shoppingCartBodyEl.addEventListener('change', event => {
+//     const quantityEl = event.target.closest('.cart-value')
+    
+// })
+
+
 shoppingCartBodyEl.addEventListener('click', event => {
-  const closeBtnEl = event.target.closest('.btn-close')
-  const cartItemEl = event.target.closest('.shop-cart-item')
+    const closeBtnEl = event.target.closest('.btn-close')
+    const cartItemEl = event.target.closest('.shop-cart-item')
 
-  if (closeBtnEl && cartItemEl) {
-    const cartItemId = cartItemEl.dataset.id
+    if (closeBtnEl && cartItemEl) {
+        const cartItemId = cartItemEl.dataset.id
 
-    shoppingCartLS.forEach((item, i) => {
-      if (item.id == cartItemId) {
-        shoppingCartLS.splice(i, 1)
-      }
-    })
-    localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
+        shoppingCartLS.forEach((item, i) => {
+            if (item.id == cartItemId) {
+                shoppingCartLS.splice(i, 1)
+            }
+        })
+        localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
 
-    renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
-
-    activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
-  }
+        renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+        activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+    }
 })
 
 
 shoppingCartBtnEl.addEventListener('click', () => {
-  renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+    renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
 })
 
 
 function renderShoppingCartElement(where, array) {
-  where.innerHTML = ''
+    if (array.length) {
+        shoppingCartTableEl.classList.remove('d-none')
+        shoppingCartFooterEl.classList.remove('d-none')
+        shoppingCartEmptyEl.classList.add('d-none')
 
-  let html = ''
-  const uniq = [...new Set(array.map(JSON.stringify))].map(JSON.parse)
+        where.innerHTML = ''
 
-  uniq.forEach((element, i) => {
-    html += shoppingCartElement(array, element, i + 1)
-  });
+        let html = ''
 
-  where.insertAdjacentHTML('beforeEnd', html)
+        const uniq = [...new Set(array.map(JSON.stringify))].map(JSON.parse)
+
+        uniq.forEach((element, i) => {
+            html += shoppingCartElement(array, element, i + 1)
+        });
+
+        where.insertAdjacentHTML('beforeEnd', html)
+
+        const toPayUSD = array.reduce((sum, curr) => {
+            return sum + curr.price
+        }, 0)
+        const toPayUAH = toPayUSD * exchangeCourseUSD
+
+        toPayUsdEl.innerHTML = usdFormatter.format(toPayUSD)
+        toPayUahEl.innerHTML = uahFormatter.format(toPayUAH)
+    } else {
+        shoppingCartTableEl.classList.add('d-none')
+        shoppingCartFooterEl.classList.add('d-none')
+        shoppingCartEmptyEl.classList.remove('d-none')
+    }
 }
 
 
 function shoppingCartElement(array, data, num) {
-  const priceUAH = data.price * exchangeCourseUSD
-  const reapitingElem = array.filter(item => item.id == data.id)
-  const priceTotalUSD = data.price * reapitingElem.length
-  const priceTotalUAH = priceTotalUSD * exchangeCourseUSD
+    const priceUAH = data.price * exchangeCourseUSD
+    const reapitingElem = array.filter(item => item.id == data.id)
+    const priceTotalUSD = data.price * reapitingElem.length
+    const priceTotalUAH = priceTotalUSD * exchangeCourseUSD
 
-  return `<tr class="shop-cart-item" data-id="${data.id}">
-            <th scope="row">${num}</th>
-            <td>${data.make} ${data.model} ${data.engine_volume ? data.engine_volume : ''} ${data.transmission ? data.transmission : ''} (${data.year})</td>
-            <td>
-              <span>${usdFormatter.format(data.price)}</span>
-              <small class="text-muted">/ ${priceUAH ? uahFormatter.format(priceUAH) : '---'}</small>
-            </td>
-            <td>
-              <div class="input-group justify-content-center">
-                <button class="btn btn-primary">-</button>
-                <input class="text-center border-1 border-primary w-25" type="number" name="count" min="0" step="1" value="${reapitingElem.length}">
-                <button class="btn btn-primary">+</button>
-              </div>
-            </td>
-            <td>
-              <span>${usdFormatter.format(priceTotalUSD)}</span>
-              <small class="text-muted">/ ${priceTotalUAH ? uahFormatter.format(priceTotalUAH) : '---'}</small>
-            </td>
-            <td>
-              <button type="button" class="btn-close align-middle" aria-label="Close"></button>
-            </td>
-          </tr>`
+    return `<tr class="shop-cart-item" data-id="${data.id}">
+                <th scope="row">${num}</th>
+                <td>${data.make} ${data.model} ${data.engine_volume ? data.engine_volume : ''} ${data.transmission ? data.transmission : ''} (${data.year})</td>
+                <td>
+                    <span>${usdFormatter.format(data.price)}</span>
+                    <span class="text-muted cart-price-uah">/ ${priceUAH ? uahFormatter.format(priceUAH) : '---'}</span>
+                </td>
+                <td>
+                    <div class="input-group justify-content-center">
+                        <button class="btn btn-primary">-</button>
+                        <input class="cart-value text-center border-1 border-primary w-25" type="number" name="count" min="0" step="1" value="${reapitingElem.length}">
+                        <button class="btn btn-primary">+</button>
+                    </div>
+                </td>
+                <td>
+                    <span>${usdFormatter.format(priceTotalUSD)}</span>
+                    <span class="text-muted cart-price-uah">/ ${priceTotalUAH ? uahFormatter.format(priceTotalUAH) : '---'}</span>
+                </td>
+                <td>
+                    <button type="button" class="btn-close align-middle" aria-label="Close"></button>
+                </td>
+            </tr>`
 }
 
 

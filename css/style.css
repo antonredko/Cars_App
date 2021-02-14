@@ -58,11 +58,11 @@ a, span, ::before, ::after{
 html{
     scroll-behavior: smooth;
 }
-.btn_with_count{
-	padding: .175rem .55rem;
+.btn_with_count:focus{
+    outline: 4px solid rgb(220 53 69/50%);
 }
 .badge{
-	transform: translate(-55%, -58%);
+	transform: translate(-65%, -45%);
 }
 .favorites{
 	top: 16px;
@@ -171,4 +171,11 @@ html{
 .modal input[type="number"]::-webkit-outer-spin-button,
 .modal input[type="number"]::-webkit-inner-spin-button {
 	display: none;
+}
+.cart-price-uah{
+    font-size: .9rem;
+}
+.shopping-cart-empty{
+    height: 400px;
+    background: linear-gradient(rgb(255 255 255/80%), rgb(255 255 255/80%)), url('../img/shopping_cart_bgr.webp') no-repeat center/contain;
 }
