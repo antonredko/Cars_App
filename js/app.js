@@ -65,7 +65,13 @@ if (!localStorage.shoppingCart) {
 createLayout()
 
 
-// window.addEventListener('scroll', cardViewed)
+// window.addEventListener('scroll', () => {
+//     const reviewedCars = [...carListEl.children].filter(el => el.getBoundingClientRect().top < 0)
+    
+//     reviewedCars.forEach(el => {
+//         el.querySelector('.reviewed').innerHTML++
+//     })
+// })
 
 
 // shoppingCartBodyEl.addEventListener('change', event => {
@@ -242,11 +248,6 @@ showMoreBtnEl.addEventListener('click', () => {
 showAllBtnEl.addEventListener('click', () => {
     renderCards(carListEl, CARS, true, true)
 })
-
-
-// function cardViewed() {
-//     console.log(carListEl.getBoundingClientRect().height / carListEl.children.length);
-// }
 
 
 function renderShoppingCartElement(where, array) {
@@ -518,7 +519,7 @@ function Card(data) {
               </small>
               <small class="ms-3">
                 <i class="fas fa-eye me-1"></i>
-                <span>${data.reviews}</span>
+                <span class="reviewed">${data.reviews}</span>
               </small>
             </div>
           </div>`
