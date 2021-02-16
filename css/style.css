@@ -151,8 +151,11 @@ html{
 	top: 1rem;
 }
 .filter-block{
-	max-height: 103px;
+	max-height: 119px;
 	background-color: var(--bs-white);
+}
+.filter-block>label:last-child{
+	padding-bottom: .5rem;
 }
 .filter-count{
 	color: rgb(255 255 255/60%);

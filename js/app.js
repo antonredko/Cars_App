@@ -3,8 +3,6 @@ let CARS = []
 const carListEl = document.getElementById('carList')
 const favoritsBtnEl = document.getElementById('favoritsBtn')
 const favoritsCountEl = document.getElementById('favoritsCount')
-const shoppingCartBtnEl = document.getElementById('shoppingCartBtn')
-const shoppingCartCountEl = document.getElementById('shoppingCartCount')
 const masonryBtnsEl = document.getElementById('masonryBtns')
 const sortingSelectEl = document.getElementById('sortingSelect')
 const showMoreBtnEl = document.getElementById('showMoreBtn')
@@ -15,11 +13,6 @@ const filterFormEl = document.getElementById('filterForm')
 const filterCountEl = document.getElementById('filterCount')
 const notFoundEl = document.getElementById('notFound')
 const backToListBtnEl = document.getElementById('backToListBtn')
-const shoppingCartTableEl = document.getElementById('shoppingCartTable')
-const shoppingCartEmptyEl = document.getElementById('shoppingCartEmpty')
-const shoppingCartFooterEl = document.getElementById('shoppingCartFooter')
-const toPayUsdEl = document.getElementById('toPayUsd')
-const toPayUahEl = document.getElementById('toPayUah')
 const dateFormatter = new Intl.DateTimeFormat()
 const numberFormatter = new Intl.NumberFormat()
 const timeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -43,7 +36,14 @@ let wishListLS = []
 let shoppingCartLS = []
 const searchFields = ['make', 'model', 'year']
 const filterFields = ['make', 'fuel', 'transmission', "price"]
+const shoppingCartBtnEl = document.getElementById('shoppingCartBtn')
+const shoppingCartCountEl = document.getElementById('shoppingCartCount')
 const shoppingCartBodyEl = document.getElementById('shoppingCartBody')
+const shoppingCartTableEl = document.getElementById('shoppingCartTable')
+const shoppingCartEmptyEl = document.getElementById('shoppingCartEmpty')
+const shoppingCartFooterEl = document.getElementById('shoppingCartFooter')
+const toPayUsdEl = document.getElementById('toPayUsd')
+const toPayUahEl = document.getElementById('toPayUah')
 
 
 if (!localStorage.wishList) {
@@ -63,6 +63,40 @@ if (!localStorage.shoppingCart) {
 
 
 createLayout()
+
+
+// window.addEventListener('scroll', cardViewed)
+
+
+// shoppingCartBodyEl.addEventListener('change', event => {
+//     const quantityEl = event.target.closest('.cart-value')
+    
+// })
+
+
+shoppingCartBodyEl.addEventListener('click', event => {
+  const closeBtnEl = event.target.closest('.btn-close')
+  const cartItemEl = event.target.closest('.shop-cart-item')
+
+  if (closeBtnEl && cartItemEl) {
+      const cartItemId = cartItemEl.dataset.id
+
+      shoppingCartLS.forEach((item, i) => {
+          if (item.id == cartItemId) {
+              shoppingCartLS.splice(i, 1)
+          }
+      })
+      localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
+
+      renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+      activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+  }
+})
+
+
+shoppingCartBtnEl.addEventListener('click', () => {
+  renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+})
 
 
 filterFormEl.addEventListener('submit', function(event) {
@@ -210,35 +244,9 @@ showAllBtnEl.addEventListener('click', () => {
 })
 
 
-// shoppingCartBodyEl.addEventListener('change', event => {
-//     const quantityEl = event.target.closest('.cart-value')
-    
-// })
-
-
-shoppingCartBodyEl.addEventListener('click', event => {
-    const closeBtnEl = event.target.closest('.btn-close')
-    const cartItemEl = event.target.closest('.shop-cart-item')
-
-    if (closeBtnEl && cartItemEl) {
-        const cartItemId = cartItemEl.dataset.id
-
-        shoppingCartLS.forEach((item, i) => {
-            if (item.id == cartItemId) {
-                shoppingCartLS.splice(i, 1)
-            }
-        })
-        localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
-
-        renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
-        activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
-    }
-})
-
-
-shoppingCartBtnEl.addEventListener('click', () => {
-    renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
-})
+// function cardViewed() {
+//     console.log(carListEl.getBoundingClientRect().height / carListEl.children.length);
+// }
 
 
 function renderShoppingCartElement(where, array) {
@@ -259,13 +267,11 @@ function renderShoppingCartElement(where, array) {
 
         where.insertAdjacentHTML('beforeEnd', html)
 
-        const toPayUSD = array.reduce((sum, curr) => {
-            return sum + curr.price
-        }, 0)
+        const toPayUSD = array.reduce((sum, curr) => sum + curr.price, 0)
         const toPayUAH = toPayUSD * exchangeCourseUSD
 
         toPayUsdEl.innerHTML = usdFormatter.format(toPayUSD)
-        toPayUahEl.innerHTML = uahFormatter.format(toPayUAH)
+        toPayUahEl.innerHTML = uahFormatter.format(toPayUAH) || '---'
     } else {
         shoppingCartTableEl.classList.add('d-none')
         shoppingCartFooterEl.classList.add('d-none')
@@ -329,7 +335,7 @@ function createFilterBlock(cars, field) {
     })
   }
 
-  return `<fieldset class="row mb-3 rounded filter-block overflow-auto">
+  return `<fieldset class="row mb-3 pt-2 rounded filter-block overflow-auto">
             <legend class="col-form-label col-sm-2 pt-0 fw-bold">
               ${field == "make" ? "Марка"
                 : field == "fuel" ? "Топливо"

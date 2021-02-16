@@ -44,9 +44,8 @@
                         <form name="searchForm" id="searchForm"
                             class="lh-base col-7 d-flex justify-content-center px-5">
                             <div class="form-floating w-100">
-                                <input type="search" name="search" class="form-control rounded-0 rounded-start"
-                                    id="queryField" minlength="2" placeholder="Введите запрос" required>
-                                <label for="queryField" class="d-flex align-items-center">Введите запрос</label>
+                                <input type="search" name="search" class="form-control rounded-0 rounded-start" id="queryField" minlength="2" placeholder="Введите марку, модель или год выпуска автомобиля" required>
+                                <label for="queryField" class="d-flex align-items-center">Введите марку, модель или год выпуска</label>
                             </div>
                             <button type="submit" class="btn btn-primary rounded-0 rounded-end">Поиск</button>
                         </form>
@@ -98,7 +97,7 @@
                             <tbody id="shoppingCartBody"></tbody>
                         </table>
                         <div class="shopping-cart-empty w-100 d-flex justify-content-center align-items-center d-none" id="shoppingCartEmpty">
-                            <h2 class="fs-1 fw-bold">Пусто...</h2>
+                            <p class="fs-1 text-muted">Пусто...</p>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between fs-5" id="shoppingCartFooter">
