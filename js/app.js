@@ -70,7 +70,9 @@ window.addEventListener('scroll', () => {
     clearTimeout(scrollTimer)
 
     scrollTimer = setTimeout(() => {
-        const reviewedCars = [...carListEl.children].filter((el) => {
+        const children = [...carListEl.children]
+        const lastChild = children[children.length - 1]
+        const reviewedCars = children.filter((el) => {
             return el.getBoundingClientRect().top < -(el.clientHeight / 2)
         })
         
@@ -82,6 +84,10 @@ window.addEventListener('scroll', () => {
                 }
             })
         })
+
+        if (isVisible(lastChild)) {
+            lastChild.querySelector('.card-footer').classList.add('reviewed-car')
+        }
     }, 500)
 })
 
@@ -541,6 +547,17 @@ function Card(data) {
 
 
 // Utils
+
+function isVisible(elem) {
+
+    const coords = elem.getBoundingClientRect();
+    const windowHeight = document.documentElement.clientHeight;
+    const topVisible = coords.top > 0 && coords.top < windowHeight;
+    const bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+  
+    return topVisible || bottomVisible;
+}
+
 
 function activateBtn(count, button, array) {
   count.innerHTML = array.length || ''
