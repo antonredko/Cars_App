@@ -66,14 +66,11 @@ createLayout()
 
 
 window.addEventListener('scroll', () => {
-    const children = [...carListEl.children]
-    const lastChild = children[children.length -1]
-    const lastChildCoords = lastChild.getBoundingClientRect()
 
     clearTimeout(scrollTimer)
-    
+
     scrollTimer = setTimeout(() => {
-        const reviewedCars = children.filter((el) => {
+        const reviewedCars = [...carListEl.children].filter((el) => {
             return el.getBoundingClientRect().top < -(el.clientHeight / 2)
         })
         
@@ -86,11 +83,6 @@ window.addEventListener('scroll', () => {
             })
         })
     }, 500)
-    
-
-    if (lastChildCoords.top > 0 && lastChildCoords.bottom > 0) {
-        lastChild.querySelector('.card-footer').classList.add('reviewed-car')
-    }
 })
 
 
