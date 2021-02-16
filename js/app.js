@@ -44,7 +44,7 @@ const shoppingCartEmptyEl = document.getElementById('shoppingCartEmpty')
 const shoppingCartFooterEl = document.getElementById('shoppingCartFooter')
 const toPayUsdEl = document.getElementById('toPayUsd')
 const toPayUahEl = document.getElementById('toPayUah')
-
+let scrollTimer = null
 
 if (!localStorage.wishList) {
   localStorage.wishList = JSON.stringify([])
@@ -65,13 +65,33 @@ if (!localStorage.shoppingCart) {
 createLayout()
 
 
-// window.addEventListener('scroll', () => {
-//     const reviewedCars = [...carListEl.children].filter(el => el.getBoundingClientRect().top < 0)
+window.addEventListener('scroll', () => {
+    const children = [...carListEl.children]
+    const lastChild = children[children.length -1]
+    const lastChildCoords = lastChild.getBoundingClientRect()
+
+    clearTimeout(scrollTimer)
     
-//     reviewedCars.forEach(el => {
-//         el.querySelector('.reviewed').innerHTML++
-//     })
-// })
+    scrollTimer = setTimeout(() => {
+        const reviewedCars = children.filter((el) => {
+            return el.getBoundingClientRect().top < -(el.clientHeight / 2)
+        })
+        
+        reviewedCars.forEach(el => {
+            CARS.find(item => {
+                if (item.id == el.dataset.carid) {
+                    el.querySelector('.reviewed').innerHTML = item.reviews + 1
+                    el.querySelector('.card-footer').classList.add('reviewed-car')
+                }
+            })
+        })
+    }, 500)
+    
+
+    if (lastChildCoords.top > 0 && lastChildCoords.bottom > 0) {
+        lastChild.querySelector('.card-footer').classList.add('reviewed-car')
+    }
+})
 
 
 // shoppingCartBodyEl.addEventListener('change', event => {
@@ -512,15 +532,17 @@ function Card(data) {
                 </div>
               </div>
             </div>
-            <div class="card-footer text-muted d-flex">
-              <small>
-                <i class="far fa-clock me-1"></i>
-                <span>${timeFormatter.format(data.timestamp)} ${dateFormatter.format(data.timestamp)}</span>
-              </small>
-              <small class="ms-3">
-                <i class="fas fa-eye me-1"></i>
-                <span class="reviewed">${data.reviews}</span>
-              </small>
+            <div class="card-footer text-muted d-flex justify-content-between">
+              <div>
+                  <small>
+                    <i class="far fa-clock me-1"></i>
+                    <span>${timeFormatter.format(data.timestamp)} ${dateFormatter.format(data.timestamp)}</span>
+                  </small>
+                  <small class="ms-3">
+                    <i class="fas fa-eye me-1"></i>
+                    <span class="reviewed">${data.reviews}</span>
+                  </small>
+              </div>
             </div>
           </div>`
 }
@@ -549,7 +571,7 @@ function findSiblings(elem) {
 
 async function getData() {
   try {
-    const response = await fetch('/Cars_List/data/cars.json')
+    const response = await fetch('/data/cars.json')
     const data = await response.json()
     DATA = [...data]
     CARS = [...data]

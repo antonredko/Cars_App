@@ -182,3 +182,6 @@ html{
     height: 400px;
     background: linear-gradient(rgb(255 255 255/80%), rgb(255 255 255/80%)), url('../img/shopping_cart_bgr.webp') no-repeat center/contain;
 }
+.reviewed-car::after{
+    content: '\2705';
+}
