@@ -563,7 +563,7 @@ function findSiblings(elem) {
 
 async function getData() {
   try {
-    const response = await fetch('/data/cars.json')
+    const response = await fetch('/Cars_List/data/cars.json')
     const data = await response.json()
     DATA = [...data]
     CARS = [...data]
