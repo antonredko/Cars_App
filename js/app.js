@@ -160,15 +160,16 @@ carListEl.addEventListener('click', event => {
 
     favBtnEl.blur()
   }
-
   if (shopCartBtnEl && cardEl) {
-    shoppingCartLS.push(CARS.find(car => car.id == carId))
+    shoppingCartLS.push({[carId]: ++cardEl.dataset.shopcount})
 
-    localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
+    console.log(shoppingCartLS)
+    
+    // localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
 
-    activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+    // activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
 
-    shopCartBtnEl.blur()
+    // shopCartBtnEl.blur()
   }
 })
 
@@ -472,7 +473,7 @@ function Card(data) {
     }
   }
 
-  return `<div class="card mb-3 p-0" data-carid="${data.id}">
+  return `<div class="card mb-3 p-0" data-carid="${data.id}" data-shopcount="0">
             <div class="favorites position-absolute">
               <button class="btn ${wishListLS.includes(data.id) ? 'btn-warning' : 'btn-secondary'} border-0 rounded-3 fs-5 to-favorites"><i class="fas fa-star"></i></button>
             </div>
@@ -580,7 +581,7 @@ function findSiblings(elem) {
 
 async function getData() {
   try {
-    const response = await fetch('/Cars_List/data/cars.json')
+    const response = await fetch('/data/cars.json')
     const data = await response.json()
     DATA = [...data]
     CARS = [...data]
