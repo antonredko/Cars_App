@@ -161,17 +161,13 @@ carListEl.addEventListener('click', event => {
     favBtnEl.blur()
   }
   if (shopCartBtnEl && cardEl) {
-    const cartItemId = cartItemEl.dataset.id
+    shoppingCartLS.push(CARS.find(car => car.id == carId))
 
-    shoppingCartLS.forEach((item, i) => {
-        if (item.id == cartItemId) {
-            shoppingCartLS.splice(i, 1)
-        }
-    })
     localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
 
-    renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
     activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
+
+    shopCartBtnEl.blur()
   }
 })
 
