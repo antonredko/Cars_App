@@ -161,15 +161,17 @@ carListEl.addEventListener('click', event => {
     favBtnEl.blur()
   }
   if (shopCartBtnEl && cardEl) {
-    shoppingCartLS.push({[carId]: ++cardEl.dataset.shopcount})
+    const cartItemId = cartItemEl.dataset.id
 
-    console.log(shoppingCartLS)
-    
-    // localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
+    shoppingCartLS.forEach((item, i) => {
+        if (item.id == cartItemId) {
+            shoppingCartLS.splice(i, 1)
+        }
+    })
+    localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
 
-    // activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
-
-    // shopCartBtnEl.blur()
+    renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
+    activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
   }
 })
 
