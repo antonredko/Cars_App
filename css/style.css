@@ -147,6 +147,9 @@ html{
 	height: 16px;
 	background: url("data:image/svg+xml,%0A%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7.5' cy='7.5' r='7' stroke='%23DB5C4C'/%3E%3Cpath d='M4.5 4V7.5M4.5 11V7.5M4.5 7.5H7.5M7.5 7.5V4M7.5 7.5V11M7.5 7.5H10.5V4' stroke='%23DB5C4C'/%3E%3C/svg%3E%0A") no-repeat center/contain;
 }
+.filter-bar{
+	border-right: 20px solid transparent;
+}
 .filter-form{
 	top: 1rem;
 }
@@ -182,6 +185,13 @@ html{
     height: 400px;
     background: linear-gradient(rgb(255 255 255/80%), rgb(255 255 255/80%)), url('../img/shopping_cart_bgr.webp') no-repeat center/contain;
 }
-.reviewed-car::after{
+.reviewed-car .card-footer::after{
     content: '\2705';
+}
+.shopping-cart-body{
+	counter-reset: shoppingCartList;
+}
+.shop-cart-item>th::before{
+	counter-increment: shoppingCartList;
+	content: counter(shoppingCartList) "";
 }

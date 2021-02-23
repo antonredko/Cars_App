@@ -46,6 +46,7 @@ const toPayUsdEl = document.getElementById('toPayUsd')
 const toPayUahEl = document.getElementById('toPayUah')
 let scrollTimer = null
 
+
 if (!localStorage.wishList) {
   localStorage.wishList = JSON.stringify([])
 } else {
@@ -70,31 +71,22 @@ window.addEventListener('scroll', () => {
     clearTimeout(scrollTimer)
 
     scrollTimer = setTimeout(() => {
-        const children = [...carListEl.children]
-        const lastChild = children[children.length - 1]
-        const reviewedCars = children.filter((el) => {
-            return el.getBoundingClientRect().top < -(el.clientHeight / 2)
-        })
+        const reviewedCars = [...carListEl.children].filter((el) => isVisible(el))
         
         reviewedCars.forEach(el => {
             CARS.find(item => {
                 if (item.id == el.dataset.carid) {
                     el.querySelector('.reviewed').innerHTML = item.reviews + 1
-                    el.querySelector('.card-footer').classList.add('reviewed-car')
+                    el.classList.add('reviewed-car')
                 }
             })
         })
-
-        if (isVisible(lastChild)) {
-            lastChild.querySelector('.card-footer').classList.add('reviewed-car')
-        }
-    }, 500)
+    }, 250)
 })
 
 
 // shoppingCartBodyEl.addEventListener('change', event => {
 //     const quantityEl = event.target.closest('.cart-value')
-    
 // })
 
 
@@ -104,12 +96,8 @@ shoppingCartBodyEl.addEventListener('click', event => {
 
   if (closeBtnEl && cartItemEl) {
       const cartItemId = cartItemEl.dataset.id
-
-      shoppingCartLS.forEach((item, i) => {
-          if (item.id == cartItemId) {
-              shoppingCartLS.splice(i, 1)
-          }
-      })
+      
+      shoppingCartLS = shoppingCartLS.filter(car => car.id != cartItemId)
       localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
 
       renderShoppingCartElement(shoppingCartBodyEl, shoppingCartLS)
@@ -162,7 +150,7 @@ carListEl.addEventListener('click', event => {
   }
   if (shopCartBtnEl && cardEl) {
     shoppingCartLS.push(CARS.find(car => car.id == carId))
-
+    
     localStorage.shoppingCart = JSON.stringify(shoppingCartLS)
 
     activateBtn(shoppingCartCountEl, shoppingCartBtnEl, shoppingCartLS)
@@ -279,9 +267,9 @@ function renderShoppingCartElement(where, array) {
 
         const uniq = [...new Set(array.map(JSON.stringify))].map(JSON.parse)
 
-        uniq.forEach((element, i) => {
-            html += shoppingCartElement(array, element, i + 1)
-        });
+        uniq.forEach(element => {
+            html += shoppingCartElement(array, element)
+        })
 
         where.insertAdjacentHTML('beforeEnd', html)
 
@@ -298,14 +286,14 @@ function renderShoppingCartElement(where, array) {
 }
 
 
-function shoppingCartElement(array, data, num) {
+function shoppingCartElement(array, data) {
     const priceUAH = data.price * exchangeCourseUSD
     const reapitingElem = array.filter(item => item.id == data.id)
     const priceTotalUSD = data.price * reapitingElem.length
     const priceTotalUAH = priceTotalUSD * exchangeCourseUSD
 
     return `<tr class="shop-cart-item" data-id="${data.id}">
-                <th scope="row">${num}</th>
+                <th scope="row"></th>
                 <td>${data.make} ${data.model} ${data.engine_volume ? data.engine_volume : ''} ${data.transmission ? data.transmission : ''} (${data.year})</td>
                 <td>
                     <span>${usdFormatter.format(data.price)}</span>
@@ -554,7 +542,7 @@ function isVisible(elem) {
     const topVisible = coords.top > 0 && coords.top < windowHeight;
     const bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
   
-    return topVisible || bottomVisible;
+    return topVisible && bottomVisible;
 }
 
 

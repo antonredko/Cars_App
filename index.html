@@ -56,12 +56,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2 filter-bar rounded position-relative">
+                <div class="col-3 filter-bar rounded position-relative">
                     <form class="filter-form position-sticky start-0" id="filterForm" name="filterForm">
                         <button type="submit" class="btn btn-primary w-100">Показать <span class="filter-count" id="filterCount">0</span></button>
                     </form>
                 </div>
-                <div class="col-9 offset-1">
+                <div class="col-9">
                     <div class="row row-cols-1 car-list" id="carList"></div>
                     <div class="not-found text-center lh-lg vh-75 fw-bold d-none" id="notFound">
                         <h2 class="fs-2">Автомобиль не найден... <i class="fas fa-frown frown"></i></h2>
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-fullscreen-xl-down modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -94,7 +94,7 @@
                                 <th scope="col">Количество</th>
                                 <th scope="col">Итого</th>
                             </thead>
-                            <tbody id="shoppingCartBody"></tbody>
+                            <tbody class="shopping-cart-body" id="shoppingCartBody"></tbody>
                         </table>
                         <div class="shopping-cart-empty w-100 d-flex justify-content-center align-items-center d-none" id="shoppingCartEmpty">
                             <p class="fs-1 text-muted">Пусто...</p>
